@@ -2,9 +2,9 @@ const Home = () => (
   <div className="portfolio-app">
     {/* NAVBAR START */}
     <div className="navbar-wrapper">
-      <nav className="navbar navbar-expand-lg navbar-dark fj-mw9">
+      <nav className="navbar navbar-expand-lg navbar-dark jc-mw9">
         <a className="navbar-brand mr-3 font-weight-bold" href="#">
-          JoeCui
+          Joe Cui
         </a>
         <button
           className="navbar-toggler"
@@ -61,8 +61,8 @@ const Home = () => (
     </div>
     {/* NAVBAR ENDS */}
     {/* HERO STARTS */}
-    <section className="fj-hero">
-      <div className="fj-hero-wrapper row">
+    <section className="jc-hero">
+      <div className="jc-hero-wrapper row">
         <div className="hero-left col-md-6">
           <h1 className="white hero-title">
             Hey I'm Joe. Experienced full stack developer
@@ -233,11 +233,11 @@ const Home = () => (
           </div>
         </div>
       </section>
-      <section className="fj-category-list">
+      <section className="jc-category-list">
         <div className="row">
           <div className="col-md-4">
-            <div className="fj-category-container">
-              <a className="fj-category subtle-shadow no-border" href="#">
+            <div className="jc-category-container">
+              <a className="jc-category subtle-shadow no-border" href="#">
                 {
                   // <div className="category-icon">
                   //   <img src="images/pen.png" />
@@ -251,8 +251,8 @@ const Home = () => (
             </div>
           </div>
           <div className="col-md-4">
-            <div className="fj-category-container">
-              <a className="fj-category subtle-shadow no-border" href="#">
+            <div className="jc-category-container">
+              <a className="jc-category subtle-shadow no-border" href="#">
                 {
                   // <div className="category-icon">
                   //   <img src="images/pen.png" />
@@ -266,8 +266,8 @@ const Home = () => (
             </div>
           </div>
           <div className="col-md-4">
-            <div className="fj-category-container">
-              <a className="fj-category subtle-shadow no-border" href="#">
+            <div className="jc-category-container">
+              <a className="jc-category subtle-shadow no-border" href="#">
                 {
                   // <div className="category-icon">
                   //   <img src="images/pen.png" />
@@ -291,7 +291,7 @@ const Home = () => (
           </div>
         </div>
       </section>
-      <section className="fj-topic-list">
+      <section className="jc-topic-list">
         <table className="table table-hover ">
           <thead>
             <tr>
@@ -333,7 +333,7 @@ const Home = () => (
         </div>
       </section>
       <section>
-        <div className="fj-post-list">
+        <div className="jc-post-list">
           <div className="row">
             <div className="col-md-9">
               <div className="topic-post">
@@ -519,14 +519,14 @@ const Home = () => (
         <div className="reply-to">
           Reply To: <span className="text ml-2">User1</span>
         </div>
-        <div className="fj-editor-input">
+        <div className="jc-editor-input">
           <input name="title" placeholder="Topic title" type="text"></input>
         </div>
-        <div className="fj-editor">
-          <div className="fj-editor-textarea-wrapper">
+        <div className="jc-editor">
+          <div className="jc-editor-textarea-wrapper">
             <textarea name="content" placeholder="Type here"></textarea>
           </div>
-          <div className="fj-editor-preview-wrapper">
+          <div className="jc-editor-preview-wrapper">
             <div className="preview">
               <p></p>
             </div>

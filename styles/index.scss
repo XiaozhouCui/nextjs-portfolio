@@ -1,5 +1,5 @@
 $main-color-blue: #316aff;
-$main-color-red: 'red';
+$main-color-red: "red";
 
 $white: #fff !default;
 $gray-10: #f8f9fa !default;
@@ -88,7 +88,7 @@ html {
   text-transform: uppercase;
 }
 
-.fj-mw9 {
+.jc-mw9 {
   max-width: 83rem;
 }
 
@@ -229,7 +229,7 @@ html {
   // left: 0;
 }
 
-.fj-hero {
+.jc-hero {
   padding: 80px 40px;
   display: flex;
   align-items: center;
@@ -289,8 +289,8 @@ html {
   }
 }
 
-.fj-category-container {
-  .fj-category {
+.jc-category-container {
+  .jc-category {
     display: flex;
     align-items: flex-start;
     padding: 1em;
@@ -330,7 +330,7 @@ html {
   }
 }
 
-.fj-topic-list {
+.jc-topic-list {
   table {
     font-size: 18px;
   }
@@ -362,7 +362,7 @@ html {
   }
 }
 
-.fj-post-list {
+.jc-post-list {
   .topic-parent {
     &-content {
       padding-top: 10px;
@@ -542,7 +542,7 @@ html {
   background-color: #222;
   box-shadow: 0 -1px 40px rgba(0, 0, 0, 0.12);
 
-  .fj-editor-input {
+  .jc-editor-input {
     width: 50%;
     background-color: #222;
     border: 1px solid #909090;
@@ -569,7 +569,7 @@ html {
     height: 350px;
   }
 
-  .fj-editor {
+  .jc-editor {
     display: flex;
     flex-grow: 1;
     min-height: 0;
@@ -599,7 +599,7 @@ html {
     }
   }
 
-  .fj-editor-textarea-wrapper {
+  .jc-editor-textarea-wrapper {
     flex: 1;
     background-color: #222;
     border: 1px solid #909090;
@@ -626,7 +626,7 @@ html {
     }
   }
 
-  .fj-editor-preview-wrapper {
+  .jc-editor-preview-wrapper {
     overflow: auto;
     flex: 1;
     border: 1px dashed rgba(255, 255, 255, 0.25);
@@ -670,7 +670,7 @@ html {
     display: inline-flex;
     align-items: center;
     transition: color 200ms, background-color 200ms, border-color 200ms;
-    font-family: 'Open Sans', Helvetica, Arial, sans-serif;
+    font-family: "Open Sans", Helvetica, Arial, sans-serif;
     font-size: 15px;
     font-weight: 400;
     line-height: normal;
