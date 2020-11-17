@@ -1,37 +1,12 @@
+import Hero from "../components/shared/Hero";
 import NavBar from "../components/shared/NavBar";
 
 const Home = () => (
   <div className="portfolio-app">
     <NavBar />
-    {/* HERO STARTS */}
-    <section className="jc-hero">
-      <div className="jc-hero-wrapper row">
-        <div className="hero-left col-md-6">
-          <h1 className="white hero-title">
-            Hey I'm Joe. Experienced full stack developer
-          </h1>
-          <h2 className="white hero-subtitle">
-            Check my portfolio and video tutorials
-          </h2>
-          <div className="button-container">
-            <a href="" className="btn btn-main bg-blue ttu">
-              See my work
-            </a>
-          </div>
-        </div>
-        <div className="hero-right col-md-6">
-          <div className="hero-image-container">
-            <a className="grow hero-link">
-              <img
-                className="hero-image"
-                src="https://i.udemycdn.com/course/750x422/1652608_662b_8.jpg"
-              ></img>
-            </a>
-          </div>
-        </div>
-      </div>
-    </section>
-    {/* HERO ENDS */}
+
+    <Hero />
+
     <div className="container">
       {/* HOME PAGE STARTS */}
       <section className="section-title">
