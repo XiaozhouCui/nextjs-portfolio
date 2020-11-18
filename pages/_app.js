@@ -1,3 +1,5 @@
+import App from "next/app";
+
 import "bootstrap/dist/css/bootstrap.min.css";
 import "../styles/index.scss";
 
@@ -10,6 +12,7 @@ function MyApp({ Component, pageProps }) {
   return (
     <div className="portfolio-app">
       <NavBar />
+      {pageProps.appData}
       {Component.name === "Home" && <Hero />}
       <div className="container">
         <Component {...pageProps} />
@@ -17,5 +20,16 @@ function MyApp({ Component, pageProps }) {
     </div>
   );
 }
+
+MyApp.getInitialProps = async (context) => {
+  console.log("GET INITIAL PROPS _APP");
+  // App.getInitialProps() is an async func
+  const initialProps =
+    App.getInitialProps && (await App.getInitialProps(context));
+  console.log(initialProps); // { pageProps: { (initial props of each page) } }
+  return {
+    pageProps: { appData: "Hello _App Component", ...initialProps.pageProps },
+  };
+};
 
 export default MyApp;

@@ -1,6 +1,7 @@
-const Portfolios = () => {
+const Portfolios = (props) => {
   return (
     <>
+      {props.testingData}
       <section className="section-title">
         <div className="px-2">
           <div className="pt-5 pb-4">
@@ -59,6 +60,21 @@ const Portfolios = () => {
       </section>
     </>
   );
+};
+
+const apiCall = () => {
+  return new Promise((res, rej) => {
+    setTimeout(() => {
+      res({ testingData: "Just some testing data" });
+    }, 200);
+  });
+};
+
+Portfolios.getInitialProps = async () => {
+  console.log("GET INITIAL PROPS PORTFOLIO");
+  // page won't be rendered until apiCall() is resolved/rejected
+  const data = await apiCall();
+  return { ...data };
 };
 
 export default Portfolios;
