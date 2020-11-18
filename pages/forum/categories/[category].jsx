@@ -1,4 +1,5 @@
-import NavBar from "../../../components/shared/NavBar";
+// @ refers to root folder -- next.config.js
+import NavBar from "@/components/shared/NavBar";
 
 const Topics = () => {
   return (
