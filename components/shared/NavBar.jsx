@@ -1,38 +1,42 @@
-import { Navbar, NavDropdown, Nav } from "react-bootstrap";
+import { Navbar, Nav } from "react-bootstrap";
+import Link from "next/link";
+
+const AppLink = ({ children, className, href }) => (
+  <Link href={href}>
+    <a className={className}>{children}</a>
+  </Link>
+);
 
 const AppNavBar = () => {
   return (
     <div className="navbar-wrapper">
       <Navbar expand="lg" className="navbar-dark jc-mw9">
-        <Navbar.Brand className="mr-3 font-weight-bold" href="#">
+        <AppLink href="/" className="navbar-brand mr-3 font-weight-bold">
           Joe Cui
-        </Navbar.Brand>
+        </AppLink>
         <Navbar.Toggle />
         <Navbar.Collapse>
           <Nav>
-            <Nav.Link href="#" className="mr-3">
+            <AppLink href="/portfolios" className="nav-link mr-3">
               Portfolios
-            </Nav.Link>
-            <Nav.Link href="#" className="mr-3">
+            </AppLink>
+            <AppLink href="/forum/categories" className="mr-3 nav-link">
               Forum
-            </Nav.Link>
-            <Nav.Link href="#" className="mr-3">
+            </AppLink>
+            <AppLink href="/cv" className="mr-3 nav-link">
               CV
-            </Nav.Link>
-            <Nav.Link href="#" className="mr-3">
-              Ask me
-            </Nav.Link>
+            </AppLink>
           </Nav>
           <Nav className="ml-auto">
-            <Nav.Link href="#" className="mr-3">
-              Sign Up
-            </Nav.Link>
-            <Nav.Link
-              href="#"
-              className="mr-3 btn btn-success bg-green-2 bright"
-            >
+            <AppLink href="/login" className="mr-3 nav-link">
               Sign In
-            </Nav.Link>
+            </AppLink>
+            <AppLink
+              href="/register"
+              className="nav-link mr-3 btn btn-success bg-green-2 bright"
+            >
+              Sign Up
+            </AppLink>
           </Nav>
         </Navbar.Collapse>
       </Navbar>
