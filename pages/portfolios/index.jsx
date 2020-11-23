@@ -1,12 +1,6 @@
 import axios from "axios";
 
-const Portfolios = (props) => {
-  const fetchPortfolios = () => {
-    const query =
-      "query Portfolios {portfolios {_id title company companyWebsite location jobTitle description}}";
-    return axios.post("http://localhost:3000/graphql", { query });
-  };
-
+const Portfolios = ({ portfolios }) => {
   return (
     <>
       <section className="section-title">
@@ -15,10 +9,8 @@ const Portfolios = (props) => {
             <h1>Portfolios</h1>
           </div>
         </div>
-        <button onClick={fetchPortfolios} className="btn btn-primary">
-          Fetch Data
-        </button>
       </section>
+      {JSON.stringify(portfolios)}
       <section className="pb-5">
         <div className="row">
           <div className="col-md-4">
@@ -76,15 +68,37 @@ const apiCall = () => {
   return new Promise((res, rej) => {
     setTimeout(() => {
       res({ testingData: "Just some testing data" });
-    }, 200);
+    }, 2000);
   });
 };
 
-// Portfolios.getInitialProps = async () => {
-//   console.log("GET INITIAL PROPS PORTFOLIO");
-//   // page won't be rendered until apiCall() is resolved/rejected
-//   const data = await apiCall();
-//   return { ...data };
-// };
+// once resolved, this function will return an array of portfolios
+const fetchPortfolios = () => {
+  // GQL query syntax
+  const query = `
+    query Portfolios {
+      portfolios {
+        _id
+        title
+        company
+        companyWebsite
+        location
+        jobTitle
+        description
+      }
+    }`;
+  // GQL uses POST request, passing in query as payload
+  return axios
+    .post("http://localhost:3000/graphql", { query })
+    .then(({ data: graph }) => graph.data)
+    .then((data) => data.portfolios);
+};
+
+Portfolios.getInitialProps = async () => {
+  console.log("GET INITIAL PROPS PORTFOLIO");
+  // page won't be rendered until fetchPortfolios() is resolved/rejected
+  const portfolios = await fetchPortfolios();
+  return { portfolios };
+};
 
 export default Portfolios;
