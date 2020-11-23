@@ -1,13 +1,23 @@
+import axios from "axios";
+
 const Portfolios = (props) => {
+  const fetchPortfolios = () => {
+    const query =
+      "query Portfolios {portfolios {_id title company companyWebsite location jobTitle description}}";
+    return axios.post("http://localhost:3000/graphql", { query });
+  };
+
   return (
     <>
-      {props.testingData}
       <section className="section-title">
         <div className="px-2">
           <div className="pt-5 pb-4">
             <h1>Portfolios</h1>
           </div>
         </div>
+        <button onClick={fetchPortfolios} className="btn btn-primary">
+          Fetch Data
+        </button>
       </section>
       <section className="pb-5">
         <div className="row">
@@ -70,11 +80,11 @@ const apiCall = () => {
   });
 };
 
-Portfolios.getInitialProps = async () => {
-  console.log("GET INITIAL PROPS PORTFOLIO");
-  // page won't be rendered until apiCall() is resolved/rejected
-  const data = await apiCall();
-  return { ...data };
-};
+// Portfolios.getInitialProps = async () => {
+//   console.log("GET INITIAL PROPS PORTFOLIO");
+//   // page won't be rendered until apiCall() is resolved/rejected
+//   const data = await apiCall();
+//   return { ...data };
+// };
 
 export default Portfolios;
