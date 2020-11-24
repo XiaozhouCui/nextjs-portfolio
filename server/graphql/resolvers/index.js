@@ -47,4 +47,29 @@ exports.portfolioResolvers = {
   portfolios: () => {
     return data.portfolios;
   },
+  createPortfolio: ({ input }) => {
+    const _id = require("crypto").randomBytes(10).toString("hex");
+    const newPortfolio = { ...input };
+    newPortfolio._id = _id;
+    data.portfolios.push(newPortfolio);
+    return newPortfolio;
+  },
 };
+
+// // GQL in graphiql
+// mutation CreatePortfolio {
+//   createPortfolio(input: {
+//     title: "New Job",
+//     company: "New Company",
+//     companyWebsite: "New Website",
+//     location: "New Location",
+//     jobTitle: "New Job Title",
+//     description: "New Desc",
+//     startDate: "12/12/2012",
+//     endDate: "14/11/2013",
+//   }) {
+//     _id
+//     title
+//     description
+//   }
+// }
