@@ -34,6 +34,7 @@ app.prepare().then(() => {
 
     type Mutation {
       createPortfolio(input: PortfolioInput): Portfolio
+      updatePortfolio(id: ID, input: PortfolioInput): Portfolio
     }
   `);
 
@@ -50,6 +51,7 @@ app.prepare().then(() => {
   const apolloServer = new ApolloServer({ typeDefs, resolvers });
 
   // add apolloServer as Express middleware
+  // all request sent to "/graphql" will be handled by apollo
   apolloServer.applyMiddleware({ app: server });
 
   // // GraphQL routes
