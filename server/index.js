@@ -50,7 +50,7 @@ app.prepare().then(() => {
   const server = express();
 
   // construct a schema, using GRAPHQL schema language
-  // "_id: ID!" means it is NOT nullable
+  // "!" means a property is NOT nullable
   const schema = buildSchema(`
 
     type Portfolio {
@@ -67,7 +67,7 @@ app.prepare().then(() => {
 
     type Query {
       hello: String
-      portfolio: Portfolio
+      portfolio(id: ID): Portfolio
       portfolios: [Portfolio]
     }
   `);
@@ -77,8 +77,9 @@ app.prepare().then(() => {
     hello: () => {
       return "Hello World!";
     },
-    portfolio: () => {
-      return data.portfolios[0];
+    portfolio: ({ id }) => {
+      const portfolio = data.portfolios.find((p) => p._id === id);
+      return portfolio;
     },
     portfolios: () => {
       return data.portfolios;
