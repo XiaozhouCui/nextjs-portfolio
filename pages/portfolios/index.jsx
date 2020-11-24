@@ -1,5 +1,6 @@
 import axios from "axios";
 import PortfolioCard from "@/components/portfolios/PortfolioCard";
+import Link from "next/link";
 
 const Portfolios = ({ portfolios }) => {
   return (
@@ -15,7 +16,11 @@ const Portfolios = ({ portfolios }) => {
         <div className="row">
           {portfolios.map((portfolio) => (
             <div key={portfolio._id} className="col-md-4">
-              <PortfolioCard portfolio={portfolio} />
+              <Link href="/portfolios/[id]" as={`/portfolios/${portfolio._id}`}>
+                <a className="card-link">
+                  <PortfolioCard portfolio={portfolio} />
+                </a>
+              </Link>
             </div>
           ))}
         </div>
@@ -57,7 +62,7 @@ const fetchPortfolios = () => {
 };
 
 Portfolios.getInitialProps = async () => {
-  console.log("GET INITIAL PROPS PORTFOLIO");
+  console.log("GET INITIAL PROPS PORTFOLIOS");
   // page won't be rendered until fetchPortfolios() is resolved/rejected
   const portfolios = await fetchPortfolios();
   return { portfolios };

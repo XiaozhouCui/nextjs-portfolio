@@ -38,7 +38,7 @@ const PortfolioDetail = ({ portfolio }) => {
           <div className="col-lg-6">
             {/* TODO: days later... */}
             <h4 className="title">Days</h4>
-            <p className="text">44</p>
+            <p className="text">88</p>
 
             <h4 className="title">End Date</h4>
             <p className="text">{portfolio.endDate}</p>
@@ -55,9 +55,10 @@ const PortfolioDetail = ({ portfolio }) => {
 };
 
 const fetchPortfolioById = (id) => {
+  // gql variable $id
   const query = `
-    query Portfolio {
-      portfolio(id: "${id}") {
+    query Portfolio ($id: ID) {
+      portfolio(id: $id) {
         title
         company
         companyWebsite
@@ -68,9 +69,11 @@ const fetchPortfolioById = (id) => {
         endDate
       }
     }`;
+  // binding gql variable $id to the function's argument "id"
+  const variables = { id: id };
   // GQL uses POST request, passing in query as payload
   return axios
-    .post("http://localhost:3000/graphql", { query })
+    .post("http://localhost:3000/graphql", { query, variables })
     .then(({ data: graph }) => graph.data.portfolio);
 };
 
