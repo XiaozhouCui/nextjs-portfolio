@@ -1,7 +1,7 @@
-import React, { Component } from "react";
+import React, { useState, useEffect } from "react";
 import { useRouter } from "next/router";
 import axios from "axios";
-import { useQuery } from "@apollo/client";
+import { useQuery, useLazyQuery } from "@apollo/client";
 import { GET_PORTFOLIO } from "@/apollo/queries";
 
 // HOOKS
@@ -11,14 +11,25 @@ const PortfolioDetail = ({ query }) => {
   // // "id" in router.query.id comes from filename [id].jsx
   // const { id } = router.query;
 
-  const { loading, error, data } = useQuery(GET_PORTFOLIO, {
-    variables: { id: query.id },
-  });
+  const [portfolio, setPortfolio] = useState(null);
 
-  if (loading) return "Loading...";
-  if (error) return `Error! ${error.message}`;
+  // const { loading, error, data } = useQuery(GET_PORTFOLIO, {
+  //   variables: { id: query.id },
+  // });
 
-  const portfolio = (data && data.portfolio) || {};
+  const [getPortfolio, { loading, data }] = useLazyQuery(GET_PORTFOLIO);
+
+  useEffect(() => {
+    getPortfolio({ variables: { id: query.id } });
+  }, []);
+
+  if (data && !portfolio) {
+    setPortfolio(data.portfolio);
+  }
+
+  if (loading || !portfolio) return "Loading...";
+
+  // const portfolio = (data && data.portfolio) || {};
 
   return (
     <div className="portfolio-detail">
