@@ -21,6 +21,15 @@ const Portfolios = ({ data }) => {
     setPortfolios(newPortfolios);
   };
 
+  const deletePortfolio = async (id) => {
+    const deletedId = await graphDeletePortfolio(id);
+    const newPortfolios = [...portfolios];
+    const index = newPortfolios.findIndex((p) => p._id === deletedId);
+    if (index === -1) return alert("ID not found");
+    newPortfolios.splice(index, 1);
+    setPortfolios(newPortfolios);
+  };
+
   return (
     <>
       <section className="section-title">
@@ -29,7 +38,7 @@ const Portfolios = ({ data }) => {
             <h1>Portfolios</h1>
           </div>
         </div>
-        <button onClick={createPortfolio} className="btn btn-primary">
+        <button onClick={createPortfolio} className="btn btn-primary m-3">
           Create Portfolio
         </button>
       </section>
@@ -43,10 +52,16 @@ const Portfolios = ({ data }) => {
                 </a>
               </Link>
               <button
-                className="btn btn-warning"
+                className="btn btn-warning m-3"
                 onClick={() => updatePortfolio(portfolio._id)}
               >
                 Update Portfolio
+              </button>
+              <button
+                className="btn btn-danger m-3"
+                onClick={() => deletePortfolio(portfolio._id)}
+              >
+                Delete Portfolio
               </button>
             </div>
           ))}
@@ -77,7 +92,7 @@ const fetchPortfolios = () => {
   return axios
     .post("http://localhost:3000/graphql", { query })
     .then(({ data: graph }) => graph.data)
-    .then((data) => data.portfolios);
+    .then((data) => data.portfolios); // return an array of portfolios
 };
 
 const graphCreatePortfolio = () => {
@@ -108,7 +123,7 @@ const graphCreatePortfolio = () => {
   return axios
     .post("http://localhost:3000/graphql", { query })
     .then(({ data: graph }) => graph.data)
-    .then((data) => data.createPortfolio);
+    .then((data) => data.createPortfolio); // return created portfolio
 };
 
 const graphUpdatePortfolio = (id) => {
@@ -133,7 +148,19 @@ const graphUpdatePortfolio = (id) => {
   return axios
     .post("http://localhost:3000/graphql", { query })
     .then(({ data: graph }) => graph.data)
-    .then((data) => data.updatePortfolio);
+    .then((data) => data.updatePortfolio); // return updated portfolio
+};
+
+const graphDeletePortfolio = (id) => {
+  const query = `
+    mutation DeletePortfolio {
+      deletePortfolio(id: "${id}")
+    }`;
+  // GQL uses POST request, passing in query as payload
+  return axios
+    .post("http://localhost:3000/graphql", { query })
+    .then(({ data: graph }) => graph.data)
+    .then((data) => data.deletePortfolio); // return the ID of deleted portfolio
 };
 
 Portfolios.getInitialProps = async () => {
