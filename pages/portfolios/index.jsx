@@ -12,6 +12,15 @@ const Portfolios = ({ data }) => {
     setPortfolios(newPortfolios);
   };
 
+  const updatePortfolio = async (id) => {
+    const newPortfolio = await graphUpdatePortfolio(id);
+    const newPortfolios = [...portfolios];
+    const index = newPortfolios.findIndex((p) => p._id === id);
+    if (index === -1) return alert("ID not found");
+    newPortfolios[index] = newPortfolio;
+    setPortfolios(newPortfolios);
+  };
+
   return (
     <>
       <section className="section-title">
@@ -33,6 +42,12 @@ const Portfolios = ({ data }) => {
                   <PortfolioCard portfolio={portfolio} />
                 </a>
               </Link>
+              <button
+                className="btn btn-warning"
+                onClick={() => updatePortfolio(portfolio._id)}
+              >
+                Update Portfolio
+              </button>
             </div>
           ))}
         </div>
@@ -66,7 +81,6 @@ const fetchPortfolios = () => {
 };
 
 const graphCreatePortfolio = () => {
-  // GQL query syntax
   const query = `
     mutation CreatePortfolio {
       createPortfolio(input: {
@@ -95,6 +109,31 @@ const graphCreatePortfolio = () => {
     .post("http://localhost:3000/graphql", { query })
     .then(({ data: graph }) => graph.data)
     .then((data) => data.createPortfolio);
+};
+
+const graphUpdatePortfolio = (id) => {
+  const query = `
+    mutation UpdatePortfolio {
+      updatePortfolio(id: "${id}",input: {
+        title: "Updated Job"
+        endDate: "Present"
+      }) {
+        _id
+        title
+        company
+        companyWebsite
+        location
+        jobTitle
+        description
+        startDate
+        endDate
+      }
+    }`;
+  // GQL uses POST request, passing in query as payload
+  return axios
+    .post("http://localhost:3000/graphql", { query })
+    .then(({ data: graph }) => graph.data)
+    .then((data) => data.updatePortfolio);
 };
 
 Portfolios.getInitialProps = async () => {
