@@ -8,6 +8,7 @@
     "start": "next start"
   },
   "dependencies": {
+    "@apollo/client": "^3.2.9",
     "apollo-server-express": "^2.19.0",
     "axios": "^0.21.0",
     "bootstrap": "^4.5.3",

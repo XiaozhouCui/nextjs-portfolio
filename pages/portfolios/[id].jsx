@@ -1,13 +1,25 @@
 import React, { Component } from "react";
 import { useRouter } from "next/router";
 import axios from "axios";
+import { useQuery } from "@apollo/client";
+import { GET_PORTFOLIO } from "@/apollo/queries";
 
 // HOOKS
-const PortfolioDetail = ({ portfolio }) => {
+const PortfolioDetail = ({ query }) => {
   // // with Hooks, we no longer need "getInitialProps" to get query.id
   // const router = useRouter();
   // // "id" in router.query.id comes from filename [id].jsx
   // const { id } = router.query;
+
+  const { loading, error, data } = useQuery(GET_PORTFOLIO, {
+    variables: { id: query.id },
+  });
+
+  if (loading) return "Loading...";
+  if (error) return `Error! ${error.message}`;
+
+  const portfolio = (data && data.portfolio) || {};
+
   return (
     <div className="portfolio-detail">
       <div className="container">
@@ -54,32 +66,32 @@ const PortfolioDetail = ({ portfolio }) => {
   );
 };
 
-const fetchPortfolioById = (id) => {
-  // gql variable $id
-  const query = `
-    query Portfolio ($id: ID) {
-      portfolio(id: $id) {
-        title
-        company
-        companyWebsite
-        location
-        jobTitle
-        description
-        startDate
-        endDate
-      }
-    }`;
-  // binding gql variable $id to the function's argument "id"
-  const variables = { id: id };
-  // GQL uses POST request, passing in query as payload
-  return axios
-    .post("http://localhost:3000/graphql", { query, variables })
-    .then(({ data: graph }) => graph.data.portfolio);
-};
+// const fetchPortfolioById = (id) => {
+//   // gql variable $id
+//   const query = `
+//     query Portfolio ($id: ID) {
+//       portfolio(id: $id) {
+//         title
+//         company
+//         companyWebsite
+//         location
+//         jobTitle
+//         description
+//         startDate
+//         endDate
+//       }
+//     }`;
+//   // binding gql variable $id to the function's argument "id"
+//   const variables = { id: id };
+//   // GQL uses POST request, passing in query as payload
+//   return axios
+//     .post("http://localhost:3000/graphql", { query, variables })
+//     .then(({ data: graph }) => graph.data.portfolio);
+// };
 
 PortfolioDetail.getInitialProps = async ({ query }) => {
-  const portfolio = await fetchPortfolioById(query.id);
-  return { portfolio };
+  // const portfolio = await fetchPortfolioById(query.id);
+  return { query };
 };
 
 export default PortfolioDetail;
