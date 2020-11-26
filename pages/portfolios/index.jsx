@@ -1,10 +1,23 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import axios from "axios";
 import PortfolioCard from "@/components/portfolios/PortfolioCard";
 import Link from "next/link";
+import { useLazyQuery } from "@apollo/client";
+import { GET_PORTFOLIOS } from "@/apollo/queries";
 
-const Portfolios = ({ data }) => {
-  const [portfolios, setPortfolios] = useState(data.portfolios);
+const Portfolios = () => {
+  const [portfolios, setPortfolios] = useState([]);
+  const [getPortfolios, { loading, data }] = useLazyQuery(GET_PORTFOLIOS);
+
+  useEffect(() => {
+    getPortfolios();
+  }, []);
+
+  if (data && data.portfolios.length > 0 && portfolios.length === 0) {
+    setPortfolios(data.portfolios);
+  }
+
+  if (loading) return "Loading...";
 
   const createPortfolio = async () => {
     const newPortfolio = await graphCreatePortfolio();
@@ -71,29 +84,29 @@ const Portfolios = ({ data }) => {
   );
 };
 
-// once resolved, this function will return an array of portfolios
-const fetchPortfolios = () => {
-  // GQL query syntax
-  const query = `
-    query Portfolios {
-      portfolios {
-        _id
-        title
-        company
-        companyWebsite
-        location
-        jobTitle
-        description
-        startDate
-        endDate
-      }
-    }`;
-  // GQL uses POST request, passing in query as payload
-  return axios
-    .post("http://localhost:3000/graphql", { query })
-    .then(({ data: graph }) => graph.data)
-    .then((data) => data.portfolios); // return an array of portfolios
-};
+// // once resolved, this function will return an array of portfolios
+// const fetchPortfolios = () => {
+//   // GQL query syntax
+//   const query = `
+//     query Portfolios {
+//       portfolios {
+//         _id
+//         title
+//         company
+//         companyWebsite
+//         location
+//         jobTitle
+//         description
+//         startDate
+//         endDate
+//       }
+//     }`;
+//   // GQL uses POST request, passing in query as payload
+//   return axios
+//     .post("http://localhost:3000/graphql", { query })
+//     .then(({ data: graph }) => graph.data)
+//     .then((data) => data.portfolios); // return an array of portfolios
+// };
 
 const graphCreatePortfolio = () => {
   const query = `
@@ -163,11 +176,11 @@ const graphDeletePortfolio = (id) => {
     .then((data) => data.deletePortfolio); // return the ID of deleted portfolio
 };
 
-Portfolios.getInitialProps = async () => {
-  console.log("GET INITIAL PROPS PORTFOLIOS");
-  // page won't be rendered until fetchPortfolios() is resolved/rejected
-  const portfolios = await fetchPortfolios();
-  return { data: { portfolios } };
-};
+// Portfolios.getInitialProps = async () => {
+//   console.log("GET INITIAL PROPS PORTFOLIOS");
+//   // page won't be rendered until fetchPortfolios() is resolved/rejected
+//   const portfolios = await fetchPortfolios();
+//   return { data: { portfolios } };
+// };
 
 export default Portfolios;
