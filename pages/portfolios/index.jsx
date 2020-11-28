@@ -6,17 +6,43 @@ import { useLazyQuery, useMutation } from "@apollo/client";
 import { GET_PORTFOLIOS, CREATE_PORTFOLIO } from "@/apollo/queries";
 
 const Portfolios = () => {
+  // local state
   const [portfolios, setPortfolios] = useState([]);
 
   // Apollo Client hooks
   const [getPortfolios, { loading, data }] = useLazyQuery(GET_PORTFOLIOS);
-  const [createPortfolio, { data: dataC }] = useMutation(CREATE_PORTFOLIO);
+
+  const [createPortfolio] = useMutation(CREATE_PORTFOLIO, {
+    update(cache, { data: { createPortfolio } }) {
+      // get old portfolios from cache
+      const { portfolios } = cache.readQuery({ query: GET_PORTFOLIOS });
+      // add newly created portfolio into cache
+      cache.writeQuery({
+        query: GET_PORTFOLIOS, // re-run getPortfolios query
+        data: { portfolios: [...portfolios, createPortfolio] },
+      });
+    },
+  });
+
+  // NO CACHE SOLUTION
+  // // dataC contains the newly created portfolio from useMutation "onCompleted" option (NOT CACHED)
+  // const onPortfolioCreated = (dataC) => {
+  //   // update local state
+  //   setPortfolios([...portfolios, dataC.createPortfolio]);
+  // };
+  // const [createPortfolio] = useMutation(CREATE_PORTFOLIO, {
+  //   onCompleted: onPortfolioCreated,
+  // });
 
   useEffect(() => {
     getPortfolios();
   }, []);
 
-  if (data && data.portfolios.length > 0 && portfolios.length === 0) {
+  if (
+    data &&
+    data.portfolios.length > 0 &&
+    (portfolios.length === 0 || data.portfolios.length !== portfolios.length)
+  ) {
     setPortfolios(data.portfolios);
   }
 
@@ -88,6 +114,7 @@ const Portfolios = () => {
   );
 };
 
+// WITHOUT APOLLO CLIENT, USING getInitialProps
 // // once resolved, this function will return an array of portfolios
 // const fetchPortfolios = () => {
 //   // GQL query syntax
