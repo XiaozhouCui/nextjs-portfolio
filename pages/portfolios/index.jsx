@@ -2,12 +2,15 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 import PortfolioCard from "@/components/portfolios/PortfolioCard";
 import Link from "next/link";
-import { useLazyQuery } from "@apollo/client";
-import { GET_PORTFOLIOS } from "@/apollo/queries";
+import { useLazyQuery, useMutation } from "@apollo/client";
+import { GET_PORTFOLIOS, CREATE_PORTFOLIO } from "@/apollo/queries";
 
 const Portfolios = () => {
   const [portfolios, setPortfolios] = useState([]);
+
+  // Apollo Client hooks
   const [getPortfolios, { loading, data }] = useLazyQuery(GET_PORTFOLIOS);
+  const [createPortfolio, { data: dataC }] = useMutation(CREATE_PORTFOLIO);
 
   useEffect(() => {
     getPortfolios();
@@ -19,11 +22,12 @@ const Portfolios = () => {
 
   if (loading) return "Loading...";
 
-  const createPortfolio = async () => {
-    const newPortfolio = await graphCreatePortfolio();
-    const newPortfolios = [...portfolios, newPortfolio];
-    setPortfolios(newPortfolios);
-  };
+  // // This is now handled by Apollo Client hooks
+  // const createPortfolio = async () => {
+  //   const newPortfolio = await graphCreatePortfolio();
+  //   const newPortfolios = [...portfolios, newPortfolio];
+  //   setPortfolios(newPortfolios);
+  // };
 
   const updatePortfolio = async (id) => {
     const newPortfolio = await graphUpdatePortfolio(id);
@@ -108,36 +112,36 @@ const Portfolios = () => {
 //     .then((data) => data.portfolios); // return an array of portfolios
 // };
 
-const graphCreatePortfolio = () => {
-  const query = `
-    mutation CreatePortfolio {
-      createPortfolio(input: {
-        title: "New Job",
-        company: "New Company",
-        companyWebsite: "New Website",
-        location: "New Location",
-        jobTitle: "New Job Title",
-        description: "New Desc",
-        startDate: "12/12/2012",
-        endDate: "14/11/2013",
-      }) {
-        _id
-        title
-        company
-        companyWebsite
-        location
-        jobTitle
-        description
-        startDate
-        endDate
-      }
-    }`;
-  // GQL uses POST request, passing in query as payload
-  return axios
-    .post("http://localhost:3000/graphql", { query })
-    .then(({ data: graph }) => graph.data)
-    .then((data) => data.createPortfolio); // return created portfolio
-};
+// const graphCreatePortfolio = () => {
+//   const query = `
+//     mutation CreatePortfolio {
+//       createPortfolio(input: {
+//         title: "New Job",
+//         company: "New Company",
+//         companyWebsite: "New Website",
+//         location: "New Location",
+//         jobTitle: "New Job Title",
+//         description: "New Desc",
+//         startDate: "12/12/2012",
+//         endDate: "14/11/2013",
+//       }) {
+//         _id
+//         title
+//         company
+//         companyWebsite
+//         location
+//         jobTitle
+//         description
+//         startDate
+//         endDate
+//       }
+//     }`;
+//   // GQL uses POST request, passing in query as payload
+//   return axios
+//     .post("http://localhost:3000/graphql", { query })
+//     .then(({ data: graph }) => graph.data)
+//     .then((data) => data.createPortfolio); // return created portfolio
+// };
 
 const graphUpdatePortfolio = (id) => {
   const query = `
