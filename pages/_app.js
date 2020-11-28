@@ -1,4 +1,4 @@
-import { ApolloClient, ApolloProvider, InMemoryCache } from "@apollo/client";
+// import { ApolloClient, ApolloProvider, InMemoryCache } from "@apollo/client";
 
 import "bootstrap/dist/css/bootstrap.min.css";
 import "../styles/index.scss";
@@ -6,10 +6,11 @@ import "../styles/index.scss";
 import NavBar from "../components/shared/NavBar";
 import Hero from "../components/shared/Hero";
 
-const client = new ApolloClient({
-  uri: "http://localhost:3000/graphql",
-  cache: new InMemoryCache(),
-});
+// this client is no longer needed as we use next-with-apollo
+// const client = new ApolloClient({
+//   uri: "http://localhost:3000/graphql",
+//   cache: new InMemoryCache(),
+// });
 
 // _app.js is responsible of rendering all other pages
 // _app.js will get initial props to all other pages
@@ -20,25 +21,22 @@ function MyApp({ Component, pageProps }) {
   const isHomePage = () => Component.name === "Home";
 
   return (
-    <ApolloProvider client={client}>
-      <div className="portfolio-app">
-        <NavBar />
-        {isHomePage() && <Hero />}
-        <div className="container">
-          <Component {...pageProps} />
-        </div>
-        {isHomePage() && (
-          <footer
-            id="sticky-footer"
-            className="py-4 bg-black text-white-50 py-3"
-          >
-            <div className="container text-center">
-              <small>Copyright &copy; Your Website</small>
-            </div>
-          </footer>
-        )}
+    // <ApolloProvider client={client}>
+    <div className="portfolio-app">
+      <NavBar />
+      {isHomePage() && <Hero />}
+      <div className="container">
+        <Component {...pageProps} />
       </div>
-    </ApolloProvider>
+      {isHomePage() && (
+        <footer id="sticky-footer" className="py-4 bg-black text-white-50 py-3">
+          <div className="container text-center">
+            <small>Copyright &copy; Your Website</small>
+          </div>
+        </footer>
+      )}
+    </div>
+    // </ApolloProvider>
   );
 }
 

@@ -3,6 +3,8 @@ import { useRouter } from "next/router";
 import axios from "axios";
 import { useQuery, useLazyQuery } from "@apollo/client";
 import { GET_PORTFOLIO } from "@/apollo/queries";
+import withApollo from "@/hoc/withApollo";
+import { getDataFromTree } from "@apollo/react-ssr";
 
 // HOOKS
 const PortfolioDetail = ({ query }) => {
@@ -105,7 +107,7 @@ PortfolioDetail.getInitialProps = async ({ query }) => {
   return { query };
 };
 
-export default PortfolioDetail;
+export default withApollo(PortfolioDetail, { getDataFromTree });
 
 // // CLASS COMPONENT
 // export class PortfolioDetail extends Component {
