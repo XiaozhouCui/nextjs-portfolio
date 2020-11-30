@@ -13,23 +13,30 @@ const PortfolioDetail = ({ query }) => {
   // // "id" in router.query.id comes from filename [id].jsx
   // const { id } = router.query;
 
-  const [portfolio, setPortfolio] = useState(null);
+  // const [portfolio, setPortfolio] = useState(null);
 
   // const { loading, error, data } = useQuery(GET_PORTFOLIO, {
   //   variables: { id: query.id },
   // });
 
-  const [getPortfolio, { loading, data }] = useLazyQuery(GET_PORTFOLIO);
+  // // useLazyQuery will be called in useEffect
+  // const [getPortfolio, { loading, data }] = useLazyQuery(GET_PORTFOLIO);
 
-  useEffect(() => {
-    getPortfolio({ variables: { id: query.id } });
-  }, []);
+  // server side loading
+  const { data } = useQuery(GET_PORTFOLIO, { variables: { id: query.id } });
 
-  if (data && !portfolio) {
-    setPortfolio(data.portfolio);
-  }
+  const portfolio = (data && data.portfolio) || {};
 
-  if (loading || !portfolio) return "Loading...";
+  // useEffect(() => {
+  //   getPortfolio({ variables: { id: query.id } });
+  // }, []);
+
+  // if (data && !portfolio) {
+  //   setPortfolio(data.portfolio);
+  // }
+
+  // // no longer needed as they are loaded server side.
+  // if (loading || !portfolio) return "Loading...";
 
   // const portfolio = (data && data.portfolio) || {};
 

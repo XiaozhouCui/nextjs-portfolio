@@ -2,17 +2,25 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 import PortfolioCard from "@/components/portfolios/PortfolioCard";
 import Link from "next/link";
-import { useLazyQuery, useMutation } from "@apollo/client";
-import { GET_PORTFOLIOS, CREATE_PORTFOLIO } from "@/apollo/queries";
+import { useLazyQuery, useQuery, useMutation } from "@apollo/client";
+import {
+  GET_PORTFOLIOS,
+  CREATE_PORTFOLIO,
+  UPDATE_PORTFOLIO,
+} from "@/apollo/queries";
 import withApollo from "@/hoc/withApollo";
 import { getDataFromTree } from "@apollo/react-ssr";
 
 const Portfolios = () => {
   // local state
-  const [portfolios, setPortfolios] = useState([]);
+  // const [portfolios, setPortfolios] = useState([]);
 
   // Apollo Client hooks
-  const [getPortfolios, { loading, data }] = useLazyQuery(GET_PORTFOLIOS);
+  // const [getPortfolios, { loading, data }] = useLazyQuery(GET_PORTFOLIOS);
+  const { data } = useQuery(GET_PORTFOLIOS);
+
+  // no need to pass in portfolio ID here, apollo can figure it out.
+  const [updatePortfolio] = useMutation(UPDATE_PORTFOLIO);
 
   const [createPortfolio] = useMutation(CREATE_PORTFOLIO, {
     update(cache, { data: { createPortfolio } }) {
@@ -36,19 +44,19 @@ const Portfolios = () => {
   //   onCompleted: onPortfolioCreated,
   // });
 
-  useEffect(() => {
-    getPortfolios();
-  }, []);
+  // useEffect(() => {
+  //   getPortfolios();
+  // }, []);
 
-  if (
-    data &&
-    data.portfolios.length > 0 &&
-    (portfolios.length === 0 || data.portfolios.length !== portfolios.length)
-  ) {
-    setPortfolios(data.portfolios);
-  }
+  // if (
+  //   data &&
+  //   data.portfolios.length > 0 &&
+  //   (portfolios.length === 0 || data.portfolios.length !== portfolios.length)
+  // ) {
+  //   setPortfolios(data.portfolios);
+  // }
 
-  if (loading) return "Loading...";
+  // if (loading) return "Loading...";
 
   // // This is now handled by Apollo Client hooks
   // const createPortfolio = async () => {
@@ -57,23 +65,27 @@ const Portfolios = () => {
   //   setPortfolios(newPortfolios);
   // };
 
-  const updatePortfolio = async (id) => {
-    const newPortfolio = await graphUpdatePortfolio(id);
-    const newPortfolios = [...portfolios];
-    const index = newPortfolios.findIndex((p) => p._id === id);
-    if (index === -1) return alert("ID not found");
-    newPortfolios[index] = newPortfolio;
-    setPortfolios(newPortfolios);
-  };
+  // const updatePortfolio = async (id) => {
+  //   await graphUpdatePortfolio(id);
+  //   // const newPortfolio = await graphUpdatePortfolio(id);
+  //   // const newPortfolios = [...portfolios];
+  //   // const index = newPortfolios.findIndex((p) => p._id === id);
+  //   // if (index === -1) return alert("ID not found");
+  //   // newPortfolios[index] = newPortfolio;
+  //   // setPortfolios(newPortfolios);
+  // };
 
   const deletePortfolio = async (id) => {
-    const deletedId = await graphDeletePortfolio(id);
-    const newPortfolios = [...portfolios];
-    const index = newPortfolios.findIndex((p) => p._id === deletedId);
-    if (index === -1) return alert("ID not found");
-    newPortfolios.splice(index, 1);
-    setPortfolios(newPortfolios);
+    await graphDeletePortfolio(id);
+    // const deletedId = await graphDeletePortfolio(id);
+    // const newPortfolios = [...portfolios];
+    // const index = newPortfolios.findIndex((p) => p._id === deletedId);
+    // if (index === -1) return alert("ID not found");
+    // newPortfolios.splice(index, 1);
+    // setPortfolios(newPortfolios);
   };
+
+  const portfolios = (data && data.portfolios) || [];
 
   return (
     <>
@@ -98,7 +110,9 @@ const Portfolios = () => {
               </Link>
               <button
                 className="btn btn-warning m-3"
-                onClick={() => updatePortfolio(portfolio._id)}
+                onClick={() =>
+                  updatePortfolio({ variables: { id: portfolio._id } })
+                }
               >
                 Update Portfolio
               </button>
@@ -172,30 +186,30 @@ const Portfolios = () => {
 //     .then((data) => data.createPortfolio); // return created portfolio
 // };
 
-const graphUpdatePortfolio = (id) => {
-  const query = `
-    mutation UpdatePortfolio {
-      updatePortfolio(id: "${id}",input: {
-        title: "Updated Job"
-        endDate: "Present"
-      }) {
-        _id
-        title
-        company
-        companyWebsite
-        location
-        jobTitle
-        description
-        startDate
-        endDate
-      }
-    }`;
-  // GQL uses POST request, passing in query as payload
-  return axios
-    .post("http://localhost:3000/graphql", { query })
-    .then(({ data: graph }) => graph.data)
-    .then((data) => data.updatePortfolio); // return updated portfolio
-};
+// const graphUpdatePortfolio = (id) => {
+//   const query = `
+//     mutation UpdatePortfolio {
+//       updatePortfolio(id: "${id}",input: {
+//         title: "Updated Job"
+//         endDate: "Present"
+//       }) {
+//         _id
+//         title
+//         company
+//         companyWebsite
+//         location
+//         jobTitle
+//         description
+//         startDate
+//         endDate
+//       }
+//     }`;
+//   // GQL uses POST request, passing in query as payload
+//   return axios
+//     .post("http://localhost:3000/graphql", { query })
+//     .then(({ data: graph }) => graph.data)
+//     .then((data) => data.updatePortfolio); // return updated portfolio
+// };
 
 const graphDeletePortfolio = (id) => {
   const query = `
