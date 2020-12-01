@@ -9,6 +9,7 @@ const {
 const { portfolioTypes, userTypes } = require("./types"); // types
 const Portfolio = require("./models/Portfolio"); // gql models
 const User = require("./models/User");
+const { buildAuthContext } = require("./context");
 
 exports.createApolloServer = () => {
   // construct a schema, using graphql library's buildSchema() method
@@ -29,7 +30,7 @@ exports.createApolloServer = () => {
       deletePortfolio(id: ID): ID
 
       signUp(input: SignUpInput): String
-      signIn: String
+      signIn(input: SignInInput): String
       signOut: String
     }
   `);
@@ -51,6 +52,7 @@ exports.createApolloServer = () => {
     // bind gql models as context
     context: () => {
       return {
+        ...buildAuthContext(), // returns the auth object {authenticate: ()=>{}}
         models: {
           Portfolio: new Portfolio(mongoose.model("Portfolio")),
           User: new User(mongoose.model("User")),
