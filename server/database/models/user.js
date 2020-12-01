@@ -1,4 +1,5 @@
 const mongoose = require("mongoose");
+const bcrypt = require("bcryptjs");
 
 const Schema = mongoose.Schema;
 
@@ -38,6 +39,21 @@ const userSchema = new Schema({
     type: Date,
     default: Date.now,
   },
+});
+
+userSchema.pre("save", function (next) {
+  const user = this;
+
+  bcrypt.genSalt(10, function (err, salt) {
+    if (err) return next(err);
+
+    bcrypt.hash(user.password, salt, function (err, hash) {
+      if (err) return next(err);
+      // Store hash in your password DB
+      user.password = hash;
+      next();
+    });
+  });
 });
 
 module.exports = mongoose.model("User", userSchema);

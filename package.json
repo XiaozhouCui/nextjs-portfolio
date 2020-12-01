@@ -13,6 +13,7 @@
     "@apollo/react-ssr": "^4.0.0",
     "apollo-server-express": "^2.19.0",
     "axios": "^0.21.0",
+    "bcryptjs": "^2.4.3",
     "bootstrap": "^4.5.3",
     "express": "^4.17.1",
     "express-graphql": "^0.12.0",
