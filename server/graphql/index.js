@@ -6,7 +6,7 @@ const {
   portfolioMutations,
   userMutations,
 } = require("./resolvers"); // resolvers
-const { portfolioTypes } = require("./types"); // types
+const { portfolioTypes, userTypes } = require("./types"); // types
 const Portfolio = require("./models/Portfolio"); // gql models
 const User = require("./models/User");
 
@@ -16,6 +16,7 @@ exports.createApolloServer = () => {
   // replace "buildSchema" with "gql"
   const typeDefs = gql(`
     ${portfolioTypes}
+    ${userTypes}
 
     type Query {
       portfolio(id: ID): Portfolio
@@ -27,8 +28,8 @@ exports.createApolloServer = () => {
       updatePortfolio(id: ID, input: PortfolioInput): Portfolio
       deletePortfolio(id: ID): ID
 
+      signUp(input: SignUpInput): String
       signIn: String
-      signUp: String
       signOut: String
     }
   `);

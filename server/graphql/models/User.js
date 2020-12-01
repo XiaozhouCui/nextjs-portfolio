@@ -3,12 +3,16 @@ class User {
     this.Model = model;
   }
 
-  signIn() {
-    return "Signing In...";
+  signUp(signUpData) {
+    if (signUpData.password !== signUpData.passwordConfirmation) {
+      throw new Error("Password must be the same as confirmation password!");
+    }
+    // return a promise
+    return this.Model.create(signUpData);
   }
 
-  signUp() {
-    return "Signning Up... ";
+  signIn() {
+    return "Signing In...";
   }
 
   signOut() {
