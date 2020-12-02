@@ -3,8 +3,16 @@ const User = require("../../database/models/user");
 
 // register passport middleware
 exports.init = (passport) => {
+  // serialize user into session
   passport.serializeUser((user, done) => {
     done(null, user.id);
+  });
+
+  // deserialize user out of session
+  passport.deserializeUser((id, done) => {
+    User.findById(id, (error, user) => {
+      done(error, user);
+    });
   });
 
   // 'graphql' is the name of strategy

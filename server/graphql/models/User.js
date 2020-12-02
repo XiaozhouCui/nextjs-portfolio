@@ -26,7 +26,13 @@ class User {
   // ctx comes from gql context "buildAuthContext"
   signOut(ctx) {
     try {
+      // console.log("BEFORE LOGOUT---------------");
+      // console.log("is authenticated", ctx.isAuthenticated());
+      // console.log("user", ctx.getUser());
       ctx.logout();
+      // console.log("AFTER LOGOUT---------------");
+      // console.log("is authenticated", ctx.isAuthenticated());
+      // console.log("user", ctx.getUser());
       return true;
     } catch (error) {
       return false;

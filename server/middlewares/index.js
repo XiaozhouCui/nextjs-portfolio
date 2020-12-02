@@ -19,4 +19,7 @@ exports.init = (server, db) => {
 
   // add passport middleware
   server.use(passport.initialize());
+
+  // initialize user on req object (req.user)
+  server.use(passport.session());
 };
