@@ -1,5 +1,5 @@
 const session = require("express-session");
-const config = require("./config/dev");
+const config = require("../config/dev");
 
 exports.init = (server, db) => {
   // setup session options for express-session
