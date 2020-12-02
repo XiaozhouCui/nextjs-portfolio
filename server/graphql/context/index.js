@@ -14,6 +14,7 @@ const authenticateUser = (req, options) => {
       // If we can get user here, we will save session to DB
       if (user) {
         // req.login() comes from the passport middleware
+        // req.login() will serialize user into session (using express-session) and save to DB
         req.login(user, (error) => {
           if (error) return reject(new Error(error));
           return resolve(user);
@@ -32,6 +33,9 @@ const authenticateUser = (req, options) => {
 exports.buildAuthContext = (req) => {
   const auth = {
     authenticate: (options) => authenticateUser(req, options),
+    // req.logout() comes from the passport middleware
+    // req.logout() will remove the passport of session object on DB
+    logout: () => req.logout(),
   };
 
   return auth;

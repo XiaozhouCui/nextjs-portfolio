@@ -11,6 +11,7 @@ class User {
     return this.Model.create(signUpData);
   }
 
+  // ctx comes from gql context "buildAuthContext"
   async signIn(signInData, ctx) {
     try {
       const user = await ctx.authenticate(signInData);
@@ -22,8 +23,14 @@ class User {
     }
   }
 
-  signOut() {
-    return "Signing Out...";
+  // ctx comes from gql context "buildAuthContext"
+  signOut(ctx) {
+    try {
+      ctx.logout();
+      return true;
+    } catch (error) {
+      return false;
+    }
   }
 }
 

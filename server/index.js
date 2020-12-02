@@ -17,7 +17,7 @@ db.connect();
 app.prepare().then(() => {
   const server = express();
 
-  // hook up express-session as a middleware
+  // hook up express-session and passport as middlewares
   require("./middlewares").init(server, db);
 
   // import apolloServer

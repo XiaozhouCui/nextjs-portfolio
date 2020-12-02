@@ -31,7 +31,7 @@ exports.createApolloServer = () => {
 
       signUp(input: SignUpInput): String
       signIn(input: SignInInput): User
-      signOut: String
+      signOut: Boolean
     }
   `);
 
