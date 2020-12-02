@@ -7,7 +7,7 @@ exports.init = (passport) => {
     "graphql",
     // options: email and password
     new GraphqlStrategy((options, done) => {
-      console.log("Caling verify function of strategy");
+      console.log("Calling verify function of strategy");
       // 1. Find user in DB and if user exists, verify user password
       // If user is verified, call "done"
 

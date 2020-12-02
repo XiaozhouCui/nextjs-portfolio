@@ -20,9 +20,12 @@ class GraphqlStrategy extends Strategy {
 
     // in done we will receive "error", "user", "info"
     const done = () => {
-      console.log("Calling done in authenticate callback.");
-
+      // console.log("Calling done in authenticate callback.");
       // if user then call "success" otherwise call "fail" or "error"
+      if (true) {
+        this.success("LoggedInUser");
+        // this.error("Some nasty error");
+      }
     };
 
     this.verify(options, done);

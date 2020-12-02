@@ -11,13 +11,14 @@ class User {
     return this.Model.create(signUpData);
   }
 
-  signIn(signInData, ctx) {
-    const isAuthenticated = ctx.authenticate(signInData); // returns a boolean
-
-    if (isAuthenticated) {
-      console.log("User is Authenticated");
+  async signIn(signInData, ctx) {
+    try {
+      const user = await ctx.authenticate(signInData); // returns a boolean
+      return user;
+    } catch (error) {
+      console.log(error);
+      return error;
     }
-    return `Sign In Output!`;
   }
 
   signOut() {
