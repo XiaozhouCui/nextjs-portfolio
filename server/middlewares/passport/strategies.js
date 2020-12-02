@@ -16,7 +16,7 @@ class GraphqlStrategy extends Strategy {
 
   // options: email and password
   authenticate(_, options) {
-    console.log("Calling authenticate in strategy!");
+    // console.log("Calling authenticate in strategy!");
 
     // in done we will receive "error", "user" (found from DB) and "info"
     const done = (error, user, info) => {

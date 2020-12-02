@@ -13,9 +13,9 @@ class User {
 
   async signIn(signInData, ctx) {
     try {
-      const user = await ctx.authenticate(signInData); // returns a boolean
-      console.log(user);
-      return `User: ${user.username}`;
+      const user = await ctx.authenticate(signInData);
+      // user follows the gql type "User"
+      return user;
     } catch (error) {
       console.log(error);
       return error;

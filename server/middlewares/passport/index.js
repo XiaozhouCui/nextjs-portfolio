@@ -7,7 +7,7 @@ exports.init = (passport) => {
   passport.use(
     "graphql",
     // options: email and password
-    new GraphqlStrategy(({ email }, done) => {
+    new GraphqlStrategy(({ email, password }, done) => {
       // console.log("Calling verify function of strategy");
       // Find user in DB, if user exists, verify user password
       User.findOne({ email }, (error, user) => {
@@ -15,10 +15,15 @@ exports.init = (passport) => {
         // first param of done is reserved for "error", second param for "user"
         if (!user) return done(null, false);
 
-        // TO DO: CHECK USER PASSWORD
+        user.validatePassword(password, (error, isMatching) => {
+          if (error) return done(error);
+          if (!isMatching) return done(null, false);
 
-        // If user is verified, call "done"
-        return done(null, user);
+          return done(null, user);
+        });
+
+        // If user is verified, call "done(null, user)"
+        // return done(null, user);
       });
     })
   );
