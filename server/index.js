@@ -1,7 +1,7 @@
 const express = require("express");
 const next = require("next");
 
-// following libraries are replaced by apollo-server
+// following libraries have been replaced by apollo-server
 // const { graphqlHTTP } = require("express-graphql");
 // const { buildSchema } = require("graphql");
 
@@ -11,10 +11,14 @@ const app = next({ dev });
 const handle = app.getRequestHandler();
 
 // Connect to DB
-require("./database").connect();
+const db = require("./database");
+db.connect();
 
 app.prepare().then(() => {
   const server = express();
+
+  // hook up express-session as a middleware
+  require("./middlewares").init(server, db);
 
   // import apolloServer
   const apolloServer = require("./graphql").createApolloServer();
@@ -22,16 +26,6 @@ app.prepare().then(() => {
   // add apolloServer as Express middleware
   // all request sent to "/graphql" will be handled by apollo
   apolloServer.applyMiddleware({ app: server });
-
-  // // GraphQL routes
-  // server.use(
-  //   "/graphql",
-  //   graphqlHTTP({
-  //     schema,
-  //     rootValue: root,
-  //     graphiql: true,
-  //   })
-  // );
 
   // route all other requests to next.js handler
   server.all("*", (req, res) => {
