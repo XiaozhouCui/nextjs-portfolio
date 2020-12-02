@@ -16,4 +16,7 @@ exports.init = (server, db) => {
   };
   // add express-session as middleware
   server.use(session(sess));
+
+  // add passport middleware
+  server.use(passport.initialize());
 };

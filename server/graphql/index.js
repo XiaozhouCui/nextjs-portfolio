@@ -50,9 +50,9 @@ exports.createApolloServer = () => {
     typeDefs,
     resolvers,
     // bind gql models as context
-    context: () => {
+    context: ({ req }) => {
       return {
-        ...buildAuthContext(), // returns the auth object {authenticate: ()=>{}}
+        ...buildAuthContext(req), // returns the auth object {authenticate: ()=>{}}
         models: {
           Portfolio: new Portfolio(mongoose.model("Portfolio")),
           User: new User(mongoose.model("User")),

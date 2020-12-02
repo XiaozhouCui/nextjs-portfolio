@@ -3,6 +3,10 @@ const User = require("../../database/models/user");
 
 // register passport middleware
 exports.init = (passport) => {
+  passport.serializeUser((user, done) => {
+    done(null, user.id);
+  });
+
   // 'graphql' is the name of strategy
   passport.use(
     "graphql",
@@ -18,12 +22,9 @@ exports.init = (passport) => {
         user.validatePassword(password, (error, isMatching) => {
           if (error) return done(error);
           if (!isMatching) return done(null, false);
-
+          // If user is verified, call "done(null, user)"
           return done(null, user);
         });
-
-        // If user is verified, call "done(null, user)"
-        // return done(null, user);
       });
     })
   );

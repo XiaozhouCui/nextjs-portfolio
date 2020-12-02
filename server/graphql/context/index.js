@@ -1,7 +1,7 @@
 const passport = require("passport");
 
 // options == { email, password }
-const authenticateUser = (options) => {
+const authenticateUser = (req, options) => {
   return new Promise((resolve, reject) => {
     // console.log("Calling authenticateUser");
 
@@ -13,7 +13,11 @@ const authenticateUser = (options) => {
       // Here we will get user if user is authenticated
       // If we can get user here, we will save session to DB
       if (user) {
-        return resolve(user);
+        // req.login() comes from the passport middleware
+        req.login(user, (error) => {
+          if (error) return reject(new Error(error));
+          return resolve(user);
+        });
       } else {
         return reject(new Error("Invalid email or password"));
       }
@@ -25,9 +29,9 @@ const authenticateUser = (options) => {
   });
 };
 
-exports.buildAuthContext = () => {
+exports.buildAuthContext = (req) => {
   const auth = {
-    authenticate: (options) => authenticateUser(options),
+    authenticate: (options) => authenticateUser(req, options),
   };
 
   return auth;
