@@ -7,7 +7,7 @@ const { Strategy } = require("passport-strategy");
 class GraphqlStrategy extends Strategy {
   constructor(verify) {
     super();
-    // "verify" callback is inherited from Strategy, need super()
+    // "verify" callback is inherited from passport-strategy, need super()
     if (!verify) throw new Error("Graphql strategy requires a verify callback");
 
     this.verify = verify;
@@ -18,14 +18,14 @@ class GraphqlStrategy extends Strategy {
   authenticate(_, options) {
     console.log("Calling authenticate in strategy!");
 
-    // in done we will receive "error", "user", "info"
-    const done = () => {
+    // in done we will receive "error", "user" (found from DB) and "info"
+    const done = (error, user, info) => {
       // console.log("Calling done in authenticate callback.");
-      // if user then call "success" otherwise call "fail" or "error"
-      if (true) {
-        this.success("LoggedInUser");
-        // this.error("Some nasty error");
-      }
+      // if user found, then call "this.success()" otherwise call "this.fail()" or "this.error()"
+      if (error) return this.error(error); // this.error() inherited from passport-strategy
+      if (!user) return this.fail(401);
+
+      return this.success(user, info);
     };
 
     this.verify(options, done);

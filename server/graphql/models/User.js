@@ -14,7 +14,8 @@ class User {
   async signIn(signInData, ctx) {
     try {
       const user = await ctx.authenticate(signInData); // returns a boolean
-      return user;
+      console.log(user);
+      return `User: ${user.username}`;
     } catch (error) {
       console.log(error);
       return error;
