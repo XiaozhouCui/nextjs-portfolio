@@ -7,7 +7,7 @@ const { Strategy } = require("passport-strategy");
 class GraphqlStrategy extends Strategy {
   constructor(verify) {
     super();
-
+    // "verify" callback is inherited from Strategy, need super()
     if (!verify) throw new Error("Graphql strategy requires a verify callback");
 
     this.verify = verify;

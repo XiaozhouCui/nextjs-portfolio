@@ -1,7 +1,10 @@
 const session = require("express-session");
 const config = require("../config/dev");
+const passport = require("passport");
 
 exports.init = (server, db) => {
+  require("./passport").init(passport);
+
   // setup session options for express-session
   const sess = {
     name: "portfolio-session",
