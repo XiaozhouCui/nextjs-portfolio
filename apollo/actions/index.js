@@ -4,6 +4,8 @@ import {
   CREATE_PORTFOLIO,
   UPDATE_PORTFOLIO,
   DELETE_PORTFOLIO,
+  SIGN_UP,
+  SIGN_IN,
 } from "@/apollo/queries";
 
 // Apollo Client hooks
@@ -37,3 +39,10 @@ export const useCreatePortfolio = () =>
       });
     },
   });
+
+// Auth actions start -----------------------
+
+export const useSignUp = () => useMutation(SIGN_UP);
+export const useSignIn = () => useMutation(SIGN_IN);
+
+// Auth actions end -----------------------
