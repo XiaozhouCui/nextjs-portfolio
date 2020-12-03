@@ -1,21 +1,25 @@
 import { useState } from "react";
+import { useForm } from "react-hook-form";
 
 const RegisterForm = ({ onSubmit }) => {
-  const [form, setForm] = useState({});
+  // // REPLACED BY "react-hook-form"
+  // const [form, setForm] = useState({});
 
-  const handleChange = (e) => {
-    setForm({
-      ...form,
-      [e.target.name]: e.target.value,
-    });
-  };
+  // const handleChange = (e) => {
+  //   setForm({
+  //     ...form,
+  //     [e.target.name]: e.target.value,
+  //   });
+  // };
+
+  const { register, handleSubmit } = useForm();
 
   return (
-    <form onSubmit={() => onSubmit(form)}>
+    <form onSubmit={handleSubmit(onSubmit)}>
       <div className="form-group">
         <label htmlFor="avatar">Avatar</label>
         <input
-          onChange={handleChange}
+          ref={register}
           type="text"
           className="form-control"
           name="avatar"
@@ -25,7 +29,7 @@ const RegisterForm = ({ onSubmit }) => {
       <div className="form-group">
         <label htmlFor="username">Username</label>
         <input
-          onChange={handleChange}
+          ref={register}
           type="text"
           className="form-control"
           name="username"
@@ -35,7 +39,7 @@ const RegisterForm = ({ onSubmit }) => {
       <div className="form-group">
         <label htmlFor="email">Email</label>
         <input
-          onChange={handleChange}
+          ref={register}
           type="email"
           className="form-control"
           name="email"
@@ -45,7 +49,7 @@ const RegisterForm = ({ onSubmit }) => {
       <div className="form-group">
         <label htmlFor="password">Password</label>
         <input
-          onChange={handleChange}
+          ref={register}
           type="password"
           className="form-control"
           name="password"
@@ -55,7 +59,7 @@ const RegisterForm = ({ onSubmit }) => {
       <div className="form-group">
         <label htmlFor="passwordConfirmation">Password Confirmation</label>
         <input
-          onChange={handleChange}
+          ref={register}
           type="password"
           className="form-control"
           name="passwordConfirmation"
