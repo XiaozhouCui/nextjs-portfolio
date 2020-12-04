@@ -42,7 +42,7 @@ export const useCreatePortfolio = () =>
 
 // Auth actions start -----------------------
 
-export const useSignUp = () => useMutation(SIGN_UP);
-export const useSignIn = () => useMutation(SIGN_IN);
+export const useSignUp = () => useMutation(SIGN_UP, { errorPolicy: "all" });
+export const useSignIn = () => useMutation(SIGN_IN, { errorPolicy: "all" });
 
 // Auth actions end -----------------------

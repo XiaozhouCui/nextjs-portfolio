@@ -7,6 +7,7 @@ const Login = () => {
   const [signIn, { data, error }] = useSignIn();
   // once signed in successfully, cookie will be saved
   const errorMessage = (error) => {
+    // console.log(JSON.stringify(error));
     return (
       (error.graphQLErrors && error.graphQLErrors[0].message) ||
       "Oops, something went wrong..."

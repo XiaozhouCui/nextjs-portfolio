@@ -1,9 +1,16 @@
 import RegisterForm from "@/components/forms/RegisterForm";
+import withApollo from "../hoc/withApollo";
+import { useSignUp } from "../apollo/actions";
 import Redirect from "../components/shared/Redirect";
 
 const Register = () => {
-  const register = (registerData) => {
-    alert(JSON.stringify(registerData));
+  const [signUp, { data, error }] = useSignUp();
+
+  const errorMessage = (error) => {
+    return (
+      (error.graphQLErrors && error.graphQLErrors[0].message) ||
+      "Oops, something went wrong..."
+    );
   };
 
   return (
@@ -12,8 +19,13 @@ const Register = () => {
         <div className="row">
           <div className="col-md-5 mx-auto">
             <h1 className="page-title">Register</h1>
-            <RegisterForm onSubmit={register} />
-            {/* <Redirect to="/login" /> */}
+            <RegisterForm
+              onSubmit={(signUpData) => signUp({ variables: signUpData })}
+            />
+            {data && data.signUp && <Redirect to="/" />}
+            {error && (
+              <div className="alert alert-danger">{errorMessage(error)}</div>
+            )}
           </div>
         </div>
       </div>
@@ -21,4 +33,4 @@ const Register = () => {
   );
 };
 
-export default Register;
+export default withApollo(Register);
