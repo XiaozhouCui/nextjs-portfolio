@@ -4,6 +4,7 @@ import { useSignIn } from "../apollo/actions";
 import Redirect from "../components/shared/Redirect";
 
 const Login = () => {
+  // useSignIn: apollo's useMutation(SIGN_IN)
   const [signIn, { data, error }] = useSignIn();
   // once signed in successfully, cookie will be saved
   const errorMessage = (error) => {

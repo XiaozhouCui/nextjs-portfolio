@@ -27,6 +27,14 @@ exports.portfolioMutations = {
   },
 };
 
+exports.userQueries = {
+  // ctx is the apolloServer context
+  user: (root, args, ctx) => {
+    // User is the gql model
+    return ctx.models.User.getAuthUser(ctx);
+  },
+};
+
 exports.userMutations = {
   // User is the gql model
   signUp: async (root, { input }, ctx) => {

@@ -4,6 +4,7 @@ import { useSignUp } from "../apollo/actions";
 import Redirect from "../components/shared/Redirect";
 
 const Register = () => {
+  // useSignUp: apollo's useMutation(SIGN_UP)
   const [signUp, { data, error }] = useSignUp();
 
   const errorMessage = (error) => {
