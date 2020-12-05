@@ -5,7 +5,7 @@ import Redirect from "../components/shared/Redirect";
 
 const Login = () => {
   // useSignIn: apollo's useMutation(SIGN_IN)
-  const [signIn, { data, error }] = useSignIn();
+  const [signIn, { data, loading, error }] = useSignIn();
   // once signed in successfully, cookie will be saved
   const errorMessage = (error) => {
     // console.log(JSON.stringify(error));
@@ -22,6 +22,7 @@ const Login = () => {
           <div className="col-md-5 mx-auto">
             <h1 className="page-title">Login</h1>
             <LoginForm
+              loading={loading}
               onSubmit={(signInData) => signIn({ variables: signInData })}
             />
             {data && data.signIn && <Redirect to="/" />}

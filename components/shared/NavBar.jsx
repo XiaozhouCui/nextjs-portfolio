@@ -22,15 +22,11 @@ const AppNavBar = () => {
     getUser();
   }, []);
 
+  // update local state with gql response
   if (data) {
-    if (data.user && !user) {
-      setUser(data.user);
-      setHasResponse(true);
-    }
-
-    if (!data.user && !hasResponse) {
-      setHasResponse(true);
-    }
+    if (data.user && !user) setUser(data.user);
+    if (!data.user && user) setUser(null);
+    if (!hasResponse) setHasResponse(true);
   }
 
   return (
@@ -57,7 +53,7 @@ const AppNavBar = () => {
               {user && (
                 <>
                   <span className="nav-link mr-4">Welcome {user.username}</span>
-                  <AppLink href="/login" className="nav-link btn btn-danger">
+                  <AppLink href="/logout" className="nav-link btn btn-danger">
                     Sign Out
                   </AppLink>
                 </>

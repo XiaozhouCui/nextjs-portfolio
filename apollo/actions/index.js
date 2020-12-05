@@ -6,6 +6,7 @@ import {
   DELETE_PORTFOLIO,
   SIGN_UP,
   SIGN_IN,
+  SIGN_OUT,
   GET_USER,
 } from "@/apollo/queries";
 
@@ -56,11 +57,13 @@ export const useSignIn = () =>
     update(cache, { data: { signIn } }) {
       cache.writeQuery({
         query: GET_USER,
-        // "data" here is the same as the "data" in NavBar's const [getUser, { data, error }] = useLazyGetUser();
+        // "data" here is the same as the "data" in login component const [signIn, { data, error }] = useSignIn();
         data: { user: signIn },
       });
     },
   });
+
+export const useSignOut = () => useMutation(SIGN_OUT);
 
 export const useLazyGetUser = () => useLazyQuery(GET_USER);
 

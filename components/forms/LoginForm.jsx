@@ -1,6 +1,6 @@
 import { useForm } from "react-hook-form";
 
-const LoginForm = ({ onSubmit }) => {
+const LoginForm = ({ onSubmit, loading }) => {
   // handleSubmit will take in all form data and pass them onto "onSubmit" props as args
   // register is the named export, DO NOT change to "login"
   const { handleSubmit, register } = useForm();
@@ -27,9 +27,13 @@ const LoginForm = ({ onSubmit }) => {
           id="password"
         />
       </div>
-      <button type="submit" className="btn btn-main bg-blue py-2 ttu">
-        Submit
-      </button>
+      {loading ? (
+        "Signing in..."
+      ) : (
+        <button type="submit" className="btn btn-main bg-blue py-2 ttu">
+          Submit
+        </button>
+      )}
     </form>
   );
 };
