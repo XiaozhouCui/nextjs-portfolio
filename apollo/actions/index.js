@@ -6,6 +6,7 @@ import {
   DELETE_PORTFOLIO,
   SIGN_UP,
   SIGN_IN,
+  GET_USER,
 } from "@/apollo/queries";
 
 // Apollo Client hooks
@@ -43,6 +44,9 @@ export const useCreatePortfolio = () =>
 // Auth actions start -----------------------
 
 export const useSignUp = () => useMutation(SIGN_UP, { errorPolicy: "all" });
+
 export const useSignIn = () => useMutation(SIGN_IN, { errorPolicy: "all" });
+
+export const useLazyGetUser = () => useLazyQuery(GET_USER);
 
 // Auth actions end -----------------------
