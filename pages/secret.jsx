@@ -17,4 +17,5 @@ const Secret = () => {
 };
 
 // 2 layers of wrapper HOC
-export default withApollo(withAuth(Secret));
+// only logged in "admin" user can view this page
+export default withApollo(withAuth(Secret, "admin"));
