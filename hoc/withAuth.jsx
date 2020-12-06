@@ -15,7 +15,7 @@ const WithAuth = (WrappedComponent, role) => (props) => {
 
   if (user) {
     // if we have a user, check if the user's role is the same as the allowed role
-    if (role && user.role !== role) {
+    if (role && !role.includes(user.role)) {
       return <Redirect to="/login" />;
     }
     // if the role matches, display the child component
