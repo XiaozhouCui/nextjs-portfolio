@@ -1,8 +1,36 @@
+import { useEffect, useState } from "react";
 import DatePicker from "react-datepicker";
 import { useForm } from "react-hook-form";
 
+// "onSubmit" is passed down from "new" component
+// form data will become the argument of "onSubmit" function
 const PortfolioForm = ({ onSubmit }) => {
-  const { handleSubmit, register } = useForm();
+  // combined solution of local state and react-hook-form
+  const [startDate, setStartDate] = useState(null);
+  const [endDate, setEndDate] = useState(null);
+
+  // react-hook-form
+  const { handleSubmit, register, setValue } = useForm();
+
+  useEffect(() => {
+    // register name fields for setValue args
+    register({ name: "startDate" });
+    register({ name: "endDate" });
+  }, [register]);
+
+  // "date" arg comes from date picker
+  const handleStartDate = (date) => {
+    // startDate from datepicker will be combined with other form data as the arg for onSubmit
+    setValue("startDate", date.toISOString());
+    setStartDate(date);
+  };
+
+  // "date" arg comes from date picker
+  const handleEndDate = (date) => {
+    setValue("endDate", date.toISOString());
+    setEndDate(date);
+  };
+
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
       <div className="form-group">
@@ -66,8 +94,8 @@ const PortfolioForm = ({ onSubmit }) => {
         <div>
           <DatePicker
             showYearDropdown
-            selected={new Date()}
-            onChange={() => {}}
+            selected={startDate}
+            onChange={handleStartDate}
           />
         </div>
       </div>
@@ -77,8 +105,8 @@ const PortfolioForm = ({ onSubmit }) => {
         <div>
           <DatePicker
             showYearDropdown
-            selected={new Date()}
-            onChange={() => {}}
+            selected={endDate}
+            onChange={handleEndDate}
           />
         </div>
       </div>
