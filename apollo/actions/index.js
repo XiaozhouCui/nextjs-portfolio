@@ -27,12 +27,16 @@ export const useDeletePortfolio = () =>
     errorPolicy: "all",
     // "deletePortfolio" is the deleted portfolio object
     update(cache, { data: { deletePortfolio } }) {
-      const { portfolios } = cache.readQuery({ query: GET_PORTFOLIOS });
-      const newPortfolios = portfolios.filter((p) => p._id !== deletePortfolio);
+      const { userPortfolios } = cache.readQuery({
+        query: GET_USER_PORTFOLIOS,
+      });
+      const newPortfolios = userPortfolios.filter(
+        (p) => p._id !== deletePortfolio
+      );
       cache.writeQuery({
-        query: GET_PORTFOLIOS,
+        query: GET_USER_PORTFOLIOS,
         // data is the same as data in Portfolios component const { data } = useGetPortfolio();
-        data: { portfolios: newPortfolios },
+        data: { userPortfolios: newPortfolios },
       });
     },
   });
