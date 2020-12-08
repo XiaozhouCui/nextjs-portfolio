@@ -4,6 +4,7 @@ class Portfolio {
     // this.Model === Portfolio
     this.Model = model;
     this.user = user;
+    this.writeRights = ["admin", "instructor"];
   }
 
   getAll() {
@@ -15,7 +16,7 @@ class Portfolio {
   }
 
   create(data) {
-    if (!this.user) {
+    if (!this.user || !this.writeRights.includes(this.user.role)) {
       return new Error("Not Authorised!");
     }
     // persist logged-in user to DB
