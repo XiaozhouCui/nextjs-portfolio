@@ -1,14 +1,17 @@
 // Add a graphql abstract layer on top of Mongoose Models
 class Portfolio {
   constructor(model, user) {
-    // this.Model === Portfolio
-    this.Model = model;
-    this.user = user;
-    this.writeRights = ["admin", "instructor"];
+    this.Model = model; // mongoose model (Portfolio)
+    this.user = user; // logged-in user (req.user from passport.session middleware)
+    this.writeRights = ["admin", "instructor"]; // role authorisation
   }
 
   getAll() {
     return this.Model.find({});
+  }
+
+  getAllByUser() {
+    return this.Model.find({ user: this.user._id }).sort({ startDate: "desc" });
   }
 
   getById(id) {

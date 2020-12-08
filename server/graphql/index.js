@@ -23,6 +23,7 @@ exports.createApolloServer = () => {
     type Query {
       portfolio(id: ID): Portfolio
       portfolios: [Portfolio]
+      userPortfolios: [Portfolio]
 
       user: User
     }
@@ -58,8 +59,8 @@ exports.createApolloServer = () => {
       return {
         ...buildAuthContext(req), // returns the auth object {authenticate: ()=>{}}
         models: {
-          // add logged-in user (req.user from passport.session middleware) as part of portfolio on DB
-          Portfolio: new Portfolio(mongoose.model("Portfolio"), req.user),
+          // instanciate Portfolio class by passing in "model" and "user" args defined in constructor
+          Portfolio: new Portfolio(mongoose.model("Portfolio"), req.user), // req.user is the logged-in user from passport.session middleware
           User: new User(mongoose.model("User")),
         },
       };
