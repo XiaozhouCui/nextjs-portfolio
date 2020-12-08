@@ -1,8 +1,9 @@
 // Add a graphql abstract layer on top of Mongoose Models
 class Portfolio {
-  constructor(model) {
+  constructor(model, user) {
     // this.Model === Portfolio
     this.Model = model;
+    this.user = user;
   }
 
   getAll() {
@@ -14,6 +15,11 @@ class Portfolio {
   }
 
   create(data) {
+    if (!this.user) {
+      return new Error("Not Authorised!");
+    }
+    // persist logged-in user to DB
+    data.user = this.user;
     return this.Model.create(data);
   }
 

@@ -6,19 +6,22 @@ import { useRouter } from "next/router";
 import BaseLayout from "@/layouts/BaseLayout";
 
 const PortfolioNew = () => {
+  // useMutation
   const [createPortfolio, { error }] = useCreatePortfolio();
   const router = useRouter();
 
-  const errorMessage = (error) => {
+  const errorMessage = (apolloError) => {
     return (
-      (error.graphQLErrors && error.graphQLErrors[0].message) ||
+      (apolloError.graphQLErrors && apolloError.graphQLErrors[0].message) ||
       "Oops, something went wrong..."
     );
   };
 
   // argument "data" is the form data from react-hook-form
   const handleCreatePortfolio = async (data) => {
-    await createPortfolio({ variables: data });
+    // try/catch block will NOT catch GraphQL errors (always 200 OK)
+    const response = await createPortfolio({ variables: data });
+    if (response.errors) return console.log(response.errors[0]);
     router.push("/portfolios");
   };
 

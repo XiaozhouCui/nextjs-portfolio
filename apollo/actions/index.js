@@ -15,11 +15,13 @@ import {
 export const useGetPortfolio = () => useQuery(GET_PORTFOLIOS);
 
 // no need to pass in portfolio ID here, apollo can figure it out
-export const useUpdatePortfolio = () => useMutation(UPDATE_PORTFOLIO);
+export const useUpdatePortfolio = () =>
+  useMutation(UPDATE_PORTFOLIO, { errorPolicy: "all" });
 
 // use cache option: immediately update page when clicked
 export const useDeletePortfolio = () =>
   useMutation(DELETE_PORTFOLIO, {
+    errorPolicy: "all",
     // "deletePortfolio" is the deleted portfolio object
     update(cache, { data: { deletePortfolio } }) {
       const { portfolios } = cache.readQuery({ query: GET_PORTFOLIOS });
@@ -34,15 +36,16 @@ export const useDeletePortfolio = () =>
 
 export const useCreatePortfolio = () =>
   useMutation(CREATE_PORTFOLIO, {
-    update(cache, { data: { createPortfolio } }) {
-      // get old portfolios from cache
-      const { portfolios } = cache.readQuery({ query: GET_PORTFOLIOS });
-      // add newly created portfolio into cache
-      cache.writeQuery({
-        query: GET_PORTFOLIOS, // re-run getPortfolios query
-        data: { portfolios: [...portfolios, createPortfolio] },
-      });
-    },
+    errorPolicy: "all",
+    // update(cache, { data: { createPortfolio } }) {
+    //   // get old portfolios from cache
+    //   const { portfolios } = cache.readQuery({ query: GET_PORTFOLIOS });
+    //   // add newly created portfolio into cache
+    //   cache.writeQuery({
+    //     query: GET_PORTFOLIOS, // re-run getPortfolios query
+    //     data: { portfolios: [...portfolios, createPortfolio] },
+    //   });
+    // },
   });
 
 // Auth actions start -----------------------
