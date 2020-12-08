@@ -1,6 +1,7 @@
 import { useLazyQuery, useQuery, useMutation } from "@apollo/client";
 import {
   GET_PORTFOLIOS,
+  GET_USER_PORTFOLIOS,
   CREATE_PORTFOLIO,
   UPDATE_PORTFOLIO,
   DELETE_PORTFOLIO,
@@ -13,6 +14,8 @@ import {
 // Apollo Client hooks
 // const [getPortfolios, { loading, data }] = useLazyQuery(GET_PORTFOLIOS); // lazyquery to be used with useEffect.
 export const useGetPortfolio = () => useQuery(GET_PORTFOLIOS);
+
+export const useGetUserPortfolios = () => useQuery(GET_USER_PORTFOLIOS);
 
 // no need to pass in portfolio ID here, apollo can figure it out
 export const useUpdatePortfolio = () =>
