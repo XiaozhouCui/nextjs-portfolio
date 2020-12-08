@@ -23,7 +23,7 @@ const WithAuth = (WrappedComponent, role) => (props) => {
   }
 
   // else, do this
-  return <p>Authenticating...</p>;
+  return null;
 };
 
 export default WithAuth;
