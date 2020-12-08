@@ -3,12 +3,21 @@ import PortfolioForm from "@/components/forms/PortfolioForm";
 import withApollo from "@/hoc/withApollo";
 import withAuth from "@/hoc/withAuth";
 import BaseLayout from "@/layouts/BaseLayout";
-import { useGetPortfolio } from "@/apollo/actions";
+import { useGetPortfolio, useUpdatePortfolio } from "@/apollo/actions";
 
 const PortfolioEdit = () => {
   const router = useRouter();
+  const [updatePortfolio, { error }] = useUpdatePortfolio();
   const { id } = router.query;
   const { data } = useGetPortfolio({ variables: { id } });
+
+  const errorMessage = (error) => {
+    // console.log(JSON.stringify(error));
+    return (
+      (error.graphQLErrors && error.graphQLErrors[0].message) ||
+      "Oops, something went wrong..."
+    );
+  };
 
   return (
     <BaseLayout>
@@ -20,8 +29,13 @@ const PortfolioEdit = () => {
               <PortfolioForm
                 initialData={data.portfolio}
                 // argument "data" of onSubmit is the formData from react-hook-form
-                onSubmit={() => {}}
+                onSubmit={(data) =>
+                  updatePortfolio({ variables: { id, ...data } })
+                }
               />
+            )}
+            {error && (
+              <div className="alert alert-danger">{errorMessage(error)}</div>
             )}
           </div>
         </div>
