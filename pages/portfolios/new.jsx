@@ -3,6 +3,7 @@ import withApollo from "@/hoc/withApollo";
 import withAuth from "@/hoc/withAuth";
 import { useCreatePortfolio } from "@/apollo/actions";
 import { useRouter } from "next/router";
+import BaseLayout from "@/layouts/BaseLayout";
 
 const PortfolioNew = () => {
   const [createPortfolio, { error }] = useCreatePortfolio();
@@ -22,7 +23,7 @@ const PortfolioNew = () => {
   };
 
   return (
-    <>
+    <BaseLayout>
       <div className="bwm-form mt-5">
         <div className="row">
           <div className="col-md-5 mx-auto">
@@ -37,7 +38,7 @@ const PortfolioNew = () => {
           </div>
         </div>
       </div>
-    </>
+    </BaseLayout>
   );
 };
 

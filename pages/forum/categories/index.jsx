@@ -1,6 +1,8 @@
+import BaseLayout from "@/layouts/BaseLayout";
+
 const ForumCategories = () => {
   return (
-    <>
+    <BaseLayout>
       <section className="section-title">
         <div className="px-2">
           <div className="pt-5 pb-4">
@@ -57,7 +59,7 @@ const ForumCategories = () => {
           </div>
         </div>
       </section>
-    </>
+    </BaseLayout>
   );
 };
 

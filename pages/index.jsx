@@ -1,5 +1,7 @@
+import BaseLayout from "@/layouts/BaseLayout";
+
 const Home = () => (
-  <>
+  <BaseLayout page="Home">
     {/* HOME PAGE STARTS */}
     <section className="section-title">
       <div className="px-2">
@@ -170,7 +172,7 @@ const Home = () => (
       </div>
     </div>
     {/* REPLIER ENDS */}
-  </>
+  </BaseLayout>
 );
 
 export default Home;
