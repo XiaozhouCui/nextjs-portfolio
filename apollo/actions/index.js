@@ -1,6 +1,7 @@
 import { useLazyQuery, useQuery, useMutation } from "@apollo/client";
 import {
   GET_PORTFOLIOS,
+  GET_PORTFOLIO,
   GET_USER_PORTFOLIOS,
   CREATE_PORTFOLIO,
   UPDATE_PORTFOLIO,
@@ -13,7 +14,9 @@ import {
 
 // Apollo Client hooks
 // const [getPortfolios, { loading, data }] = useLazyQuery(GET_PORTFOLIOS); // lazyquery to be used with useEffect.
-export const useGetPortfolio = () => useQuery(GET_PORTFOLIOS);
+export const useGetPortfolios = () => useQuery(GET_PORTFOLIOS);
+
+export const useGetPortfolio = (options) => useQuery(GET_PORTFOLIO, options);
 
 export const useGetUserPortfolios = () => useQuery(GET_USER_PORTFOLIOS);
 
@@ -35,7 +38,7 @@ export const useDeletePortfolio = () =>
       );
       cache.writeQuery({
         query: GET_USER_PORTFOLIOS,
-        // data is the same as data in Portfolios component const { data } = useGetPortfolio();
+        // data is the same as data in Portfolios component const { data } = useGetPortfolios();
         data: { userPortfolios: newPortfolios },
       });
     },

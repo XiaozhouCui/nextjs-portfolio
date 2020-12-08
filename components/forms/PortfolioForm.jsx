@@ -4,19 +4,32 @@ import { useForm } from "react-hook-form";
 
 // "onSubmit" is passed down from "new" component
 // form data will become the argument of "onSubmit" function
-const PortfolioForm = ({ onSubmit }) => {
+const PortfolioForm = ({ onSubmit, initialData = {} }) => {
   // combined solution of local state and react-hook-form
   const [startDate, setStartDate] = useState(null);
   const [endDate, setEndDate] = useState(null);
 
   // react-hook-form
-  const { handleSubmit, register, setValue } = useForm();
+  const { handleSubmit, register, setValue } = useForm({
+    defaultValues: initialData,
+  });
 
   useEffect(() => {
     // register name fields for setValue args
     register({ name: "startDate" });
     register({ name: "endDate" });
   }, [register]);
+
+  // second useEffect to populate startDate and endDate when editing portfolio
+  useEffect(() => {
+    const { startDate, endDate } = initialData;
+    if (startDate) {
+      setStartDate(new Date(parseInt(startDate, 10)));
+    }
+    if (endDate) {
+      setEndDate(new Date(parseInt(endDate, 10)));
+    }
+  }, [initialData]); // will be updated when passed-in initialData changes
 
   // "date" arg comes from date picker
   const handleStartDate = (date) => {
