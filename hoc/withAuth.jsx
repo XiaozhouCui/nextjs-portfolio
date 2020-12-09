@@ -10,13 +10,25 @@ export default (WrappedComponent, role, options = { ssr: false }) => {
 
     // if we don't have a user, do the following
     if (!loading && (!user || error) && typeof window !== "undefined") {
-      return <Redirect to="/login" />;
+      return (
+        <Redirect
+          to="/login"
+          // redirection message will be added as query string by next/router
+          query={{ message: "NOT_AUTHENTICATED" }} // .../login?message=NOT_AUTHENTICATED
+        />
+      );
     }
 
     // TODO: Send a message to login page
     if (user) {
       if (role && !role.includes(user.role)) {
-        return <Redirect to="/login" />;
+        return (
+          <Redirect
+            to="/login"
+            // redirection message will be added as query string by next/router
+            query={{ message: "NOT_AUTHORISED" }} // .../login?message=NOT_AUTHORISED
+          />
+        );
       }
       // if the role matches, display the child component
       return <WrappedComponent {...props} />;
@@ -33,16 +45,17 @@ export default (WrappedComponent, role, options = { ssr: false }) => {
     };
 
     WithAuth.getInitialProps = async (context) => {
+      // use server redirect, we no longer load WrappedComponent before redirection
       const { req, res } = context;
       if (req) {
         const { user } = req;
 
         if (!user) {
-          return serverRedirect(res, "/login");
+          return serverRedirect(res, "/login?message=NOT_AUTHENTICATED");
         }
 
         if (role && !role.includes(user.role)) {
-          return serverRedirect(res, "/login");
+          return serverRedirect(res, "/login?message=NOT_AUTHORISED");
         }
       }
 

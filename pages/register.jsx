@@ -24,7 +24,10 @@ const Register = () => {
             <RegisterForm
               onSubmit={(signUpData) => signUp({ variables: signUpData })}
             />
-            {data && data.signUp && <Redirect to="/" />}
+            {data && data.signUp && (
+              // .../login?message=NOT_AUTHORISED
+              <Redirect to="/login" query={{ message: "REGISTERED" }} />
+            )}
             {error && (
               <div className="alert alert-danger">{errorMessage(error)}</div>
             )}

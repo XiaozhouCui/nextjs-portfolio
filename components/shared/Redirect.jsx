@@ -1,11 +1,12 @@
 import { useEffect } from "react";
 import { useRouter } from "next/router";
 
-const Redirect = ({ to }) => {
+const Redirect = ({ to, query }) => {
   const router = useRouter();
 
   useEffect(() => {
-    router.push({ pathname: to });
+    // redirection message will be added as URL query string (...?message=NOT_AUTHORISED)
+    router.push({ pathname: to, query });
   });
 
   return null;
