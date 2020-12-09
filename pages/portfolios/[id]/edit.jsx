@@ -1,4 +1,5 @@
 import { useRouter } from "next/router";
+import { toast } from "react-toastify";
 import PortfolioForm from "@/components/forms/PortfolioForm";
 import withApollo from "@/hoc/withApollo";
 import withAuth from "@/hoc/withAuth";
@@ -19,6 +20,17 @@ const PortfolioEdit = () => {
     );
   };
 
+  const handlePortfolioUpdate = async (data) => {
+    try {
+      const response = await updatePortfolio({ variables: { id, ...data } });
+      if (response.errors && response.errors.length > 0)
+        return toast.error("Update failed", { autoClose: 3000 });
+      toast.success("Portfolio has been updated", { autoClose: 3000 });
+    } catch (error) {
+      console.log(JSON.stringify(error));
+    }
+  };
+
   return (
     <BaseLayout>
       <div className="bwm-form mt-5">
@@ -28,10 +40,8 @@ const PortfolioEdit = () => {
             {data && (
               <PortfolioForm
                 initialData={data.portfolio}
-                // argument "data" of onSubmit is the formData from react-hook-form
-                onSubmit={(data) =>
-                  updatePortfolio({ variables: { id, ...data } })
-                }
+                // argument "data" of handlePortfolioUpdate is the formData from react-hook-form
+                onSubmit={handlePortfolioUpdate}
               />
             )}
             {error && (

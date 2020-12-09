@@ -1,5 +1,6 @@
 import NavBar from "../components/shared/NavBar";
 import Hero from "../components/shared/Hero";
+import { ToastContainer } from "react-toastify";
 
 // this layout component contains the header and footer
 function BaseLayout({ children, page = "" }) {
@@ -17,6 +18,7 @@ function BaseLayout({ children, page = "" }) {
           </div>
         </footer>
       )}
+      <ToastContainer />
     </div>
   );
 }
