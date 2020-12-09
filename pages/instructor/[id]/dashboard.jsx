@@ -54,6 +54,6 @@ const InstructorDashboard = () => {
 };
 
 export default withApollo(
-  withAuth(InstructorDashboard, ["admin", "instructor"]),
+  withAuth(InstructorDashboard, ["admin", "instructor"], { ssr: true }),
   { getDataFromTree } // render this page from server
 );
