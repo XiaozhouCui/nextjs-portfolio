@@ -1,8 +1,11 @@
 import { gql } from "@apollo/client";
 
+// "daysOfExperience" is defined and calculated on client side resolver
 export const GET_PORTFOLIO = gql`
   query Portfolio($id: ID) {
     portfolio(id: $id) {
+      _id
+      daysOfExperience @client
       title
       company
       companyWebsite

@@ -74,7 +74,8 @@ const PortfolioDetail = ({ query }) => {
             <div className="col-lg-6">
               {/* TODO: days later... */}
               <h4 className="title">Days</h4>
-              <p className="text">88</p>
+              {/* daysOfExperience is the custom field defined on client side */}
+              <p className="text">{portfolio.daysOfExperience}</p>
               <h4 className="title">End Date</h4>
               <p className="text">
                 {portfolio.endDate ? formatDate(portfolio.endDate) : "Present"}
