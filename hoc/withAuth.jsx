@@ -1,7 +1,7 @@
 import { useGetUser } from "@/apollo/actions";
 import Redirect from "@/components/shared/Redirect";
 
-export default (WrappedComponent, role, options = { ssr: false }) => {
+const Auth = (WrappedComponent, role, options = { ssr: false }) => {
   function WithAuth(props) {
     const { data: { user } = {}, loading, error } = useGetUser({
       // request will always be executed, not checking cache
@@ -68,3 +68,5 @@ export default (WrappedComponent, role, options = { ssr: false }) => {
 
   return WithAuth;
 };
+
+export default Auth;

@@ -1,3 +1,4 @@
+import { useEffect, useRef } from "react";
 import { useRouter } from "next/router";
 import LoginForm from "@/components/forms/LoginForm";
 import withApollo from "@/hoc/withApollo";
@@ -14,6 +15,25 @@ const Login = () => {
   const router = useRouter();
   // get the message from URL query string
   const { message } = router.query;
+
+  const disposeMessage = () => {
+    router.replace("/login", "/login", { shallow: true });
+  };
+
+  // remove redirection message after 3 seconds
+  const disposeId = useRef(null);
+  useEffect(() => {
+    if (message) {
+      disposeId.current = setTimeout(() => {
+        disposeMessage();
+      }, 3000);
+    }
+
+    // clean up the timer when unmounted
+    return () => {
+      clearTimeout(disposeId.current);
+    };
+  }, [message]);
 
   // once signed in successfully, cookie will be saved
   const errorMessage = (error) => {
