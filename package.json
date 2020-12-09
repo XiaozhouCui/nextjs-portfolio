@@ -8,6 +8,23 @@
     "start": "next start",
     "populateDb": "node server/fakeDb/populate.js"
   },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/XiaozhouCui/nextjs-portfolio"
+  },
+  "keywords": [
+    "Next.js",
+    "GraphQL",
+    "Apollo Client",
+    "Apollo Server (as Express middleware)",
+    "React Hooks",
+    "SSR",
+    "SSG",
+    "Express.js",
+    "MongoDB",
+    "Sessions"
+  ],
+  "author": "Joe Cui",
   "dependencies": {
     "@apollo/client": "^3.2.9",
     "@apollo/react-ssr": "^4.0.0",
