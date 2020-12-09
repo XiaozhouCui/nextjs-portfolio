@@ -51,3 +51,9 @@ exports.userMutations = {
     return ctx.models.User.signOut(ctx);
   },
 };
+
+exports.forumQueries = {
+  forumCategories: async (root, args, ctx) => {
+    return ctx.models.ForumCategory.getAll();
+  },
+};

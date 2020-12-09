@@ -6,11 +6,15 @@ const {
   portfolioMutations,
   userQueries,
   userMutations,
+  forumQueries,
 } = require("./resolvers"); // resolvers
-const { portfolioTypes, userTypes } = require("./types"); // types
-const Portfolio = require("./models/Portfolio"); // gql models
-const User = require("./models/User");
+const { portfolioTypes, userTypes, forumTypes } = require("./types"); // types
 const { buildAuthContext } = require("./context");
+
+// gql models
+const Portfolio = require("./models/Portfolio");
+const User = require("./models/User");
+const ForumCategory = require("./models/ForumCategory");
 
 exports.createApolloServer = () => {
   // construct a schema, using graphql library's buildSchema() method
@@ -19,6 +23,7 @@ exports.createApolloServer = () => {
   const typeDefs = gql(`
     ${portfolioTypes}
     ${userTypes}
+    ${forumTypes}
 
     type Query {
       portfolio(id: ID): Portfolio
@@ -26,6 +31,8 @@ exports.createApolloServer = () => {
       userPortfolios: [Portfolio]
 
       user: User
+
+      forumCategories: [ForumCategory]
     }
 
     type Mutation {
@@ -44,6 +51,7 @@ exports.createApolloServer = () => {
     Query: {
       ...portfolioQueries,
       ...userQueries,
+      ...forumQueries,
     },
     Mutation: {
       ...portfolioMutations,
@@ -62,6 +70,7 @@ exports.createApolloServer = () => {
           // instanciate Portfolio class by passing in "model" and "user" args defined in constructor
           Portfolio: new Portfolio(mongoose.model("Portfolio"), req.user), // req.user is the logged-in user from passport.session middleware
           User: new User(mongoose.model("User")),
+          ForumCategory: new ForumCategory(mongoose.model("ForumCategory")),
         },
       };
     },
