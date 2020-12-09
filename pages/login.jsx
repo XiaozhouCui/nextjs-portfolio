@@ -17,6 +17,7 @@ const Login = () => {
   const { message } = router.query;
 
   const disposeMessage = () => {
+    // remove the message query string (?message=NOT_AUTHORISED)
     router.replace("/login", "/login", { shallow: true });
   };
 
@@ -37,7 +38,6 @@ const Login = () => {
 
   // once signed in successfully, cookie will be saved
   const errorMessage = (error) => {
-    // console.log(JSON.stringify(error));
     return (
       (error.graphQLErrors && error.graphQLErrors[0].message) ||
       "Oops, something went wrong..."

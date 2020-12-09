@@ -1,5 +1,6 @@
 import { useGetUser } from "@/apollo/actions";
 import Redirect from "@/components/shared/Redirect";
+import Loader from "@/components/shared/Loader";
 
 const Auth = (WrappedComponent, role, options = { ssr: false }) => {
   function WithAuth(props) {
@@ -19,7 +20,6 @@ const Auth = (WrappedComponent, role, options = { ssr: false }) => {
       );
     }
 
-    // TODO: Send a message to login page
     if (user) {
       if (role && !role.includes(user.role)) {
         return (
@@ -34,7 +34,11 @@ const Auth = (WrappedComponent, role, options = { ssr: false }) => {
       return <WrappedComponent {...props} />;
     }
 
-    return <p>Loading...</p>;
+    return (
+      <div className="spinner-container">
+        <Loader variant="large" />
+      </div>
+    );
   }
 
   if (options.ssr) {
