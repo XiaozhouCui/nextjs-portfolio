@@ -1,18 +1,17 @@
-import withApollo from "@/hoc/withApollo";
-import withAuth from "@/hoc/withAuth";
-import { useRouter } from "next/router";
-import BaseLayout from "@/layouts/BaseLayout";
 import { Card, Button } from "react-bootstrap";
-import { useGetUserPortfolios, useDeletePortfolio } from "@/apollo/actions";
 import { getDataFromTree } from "@apollo/react-ssr";
 import Link from "next/link";
+
+import withApollo from "@/hoc/withApollo";
+import withAuth from "@/hoc/withAuth";
+import BaseLayout from "@/layouts/BaseLayout";
+import { useGetUserPortfolios, useDeletePortfolio } from "@/apollo/actions";
+import { formatDate } from "@/utils/functions";
 
 const InstructorDashboard = () => {
   const { data } = useGetUserPortfolios();
   const [deletePortfolio] = useDeletePortfolio();
   const userPortfolios = (data && data.userPortfolios) || [];
-
-  const router = useRouter();
 
   return (
     <BaseLayout>
@@ -26,7 +25,8 @@ const InstructorDashboard = () => {
                 <Card.Body>
                   <Card.Title>{p.title}</Card.Title>
                   <Card.Text>
-                    {p.startDate} - {p.endDate}
+                    {formatDate(p.startDate)} -{" "}
+                    {p.endDate ? formatDate(p.endDate) : "Present"}
                   </Card.Text>
                   <Link
                     // dynamic url using next/link
