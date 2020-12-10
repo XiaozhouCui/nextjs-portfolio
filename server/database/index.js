@@ -6,6 +6,7 @@ const config = require("../config/dev");
 require("./models/portfolio");
 require("./models/user");
 require("./models/forumCategory");
+require("./models/topic");
 
 exports.connect = () => {
   mongoose.connect(
