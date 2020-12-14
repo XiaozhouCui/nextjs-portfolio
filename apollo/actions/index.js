@@ -10,6 +10,7 @@ import {
   SIGN_IN,
   SIGN_OUT,
   GET_USER,
+  FORUM_CATEGORIES,
 } from "@/apollo/queries";
 
 // Apollo Client hooks
@@ -83,3 +84,9 @@ export const useLazyGetUser = () => useLazyQuery(GET_USER);
 export const useGetUser = () => useQuery(GET_USER);
 
 // Auth actions end -----------------------
+
+// Forum actions start -----------------------
+
+export const useGetForumCategories = () => useQuery(FORUM_CATEGORIES);
+
+// Forum actions end -----------------------
