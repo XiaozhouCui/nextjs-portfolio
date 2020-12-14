@@ -11,6 +11,7 @@ import {
   SIGN_OUT,
   GET_USER,
   FORUM_CATEGORIES,
+  TOPICS_BY_CATEGORY,
 } from "@/apollo/queries";
 
 // Apollo Client hooks
@@ -88,5 +89,8 @@ export const useGetUser = () => useQuery(GET_USER);
 // Forum actions start -----------------------
 
 export const useGetForumCategories = () => useQuery(FORUM_CATEGORIES);
+
+export const useGetTopicsByCategory = (options) =>
+  useQuery(TOPICS_BY_CATEGORY, options);
 
 // Forum actions end -----------------------
