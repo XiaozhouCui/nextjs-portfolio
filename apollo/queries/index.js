@@ -189,22 +189,34 @@ export const FORUM_CATEGORIES = gql`
   }
 `;
 
+const topicResponse = `
+  _id
+  title
+  content
+  slug
+  user {
+    username
+    avatar
+  }
+  forumCategory {
+    _id
+    title
+    slug
+  }
+`;
+
 export const TOPICS_BY_CATEGORY = gql`
   query TopicsByCategory($category: String) {
     topicsByCategory(category: $category) {
-      _id
-      slug
-      title
-      content
-      user {
-        username
-        avatar
-      }
-      forumCategory {
-        _id
-        title
-        slug
-      }
+      ${topicResponse}
+    }
+  }
+`;
+
+export const TOPIC_BY_SLUG = gql`
+  query TopicBySlug($slug: String) {
+    topicBySlug(slug: $slug) {
+      ${topicResponse}
     }
   }
 `;
@@ -218,19 +230,7 @@ export const CREATE_TOPIC = gql`
     createTopic(
       input: { title: $title, content: $content, forumCategory: $forumCategory }
     ) {
-      _id
-      title
-      content
-      slug
-      user {
-        avatar
-        username
-      }
-      forumCategory {
-        _id
-        title
-        slug
-      }
+      ${topicResponse}
     }
   }
 `;
