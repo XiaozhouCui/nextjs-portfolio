@@ -3,7 +3,11 @@ import { useRouter } from "next/router";
 import { getDataFromTree } from "@apollo/react-ssr";
 import withApollo from "@/hoc/withApollo";
 import BaseLayout from "@/layouts/BaseLayout";
-import { useGetTopicsByCategory, useGetUser } from "@/apollo/actions";
+import {
+  useGetTopicsByCategory,
+  useGetUser,
+  useCreateTopic,
+} from "@/apollo/actions";
 import Replier from "@/components/shared/Replier";
 
 const useInitialData = () => {
@@ -16,16 +20,20 @@ const useInitialData = () => {
   const topicsByCategory = (dataT && dataT.topicsByCategory) || [];
   const user = (dataU && dataU.user) || null;
 
-  return { topicsByCategory, user };
+  return { topicsByCategory, user, slug };
 };
 
 const Topics = () => {
   const [isReplierOpen, setReplierOpen] = useState(false);
-  const { topicsByCategory, user } = useInitialData();
+  const { topicsByCategory, user, slug } = useInitialData();
+  const [createTopic] = useCreateTopic();
 
-  const createTopic = (topicData, done) => {
-    alert(JSON.stringify(topicData));
-    done();
+  const handleCreateTopic = (topicData, done) => {
+    topicData.forumCategory = slug;
+    createTopic({ variables: topicData }).then(() => {
+      setReplierOpen(false);
+      done();
+    });
   };
 
   return (
@@ -66,7 +74,7 @@ const Topics = () => {
         </table>
       </section>
       <Replier
-        onSubmit={createTopic}
+        onSubmit={handleCreateTopic}
         isOpen={isReplierOpen}
         onClose={() => setReplierOpen(false)}
       />

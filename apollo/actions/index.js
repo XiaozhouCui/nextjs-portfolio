@@ -12,6 +12,7 @@ import {
   GET_USER,
   FORUM_CATEGORIES,
   TOPICS_BY_CATEGORY,
+  CREATE_TOPIC,
 } from "@/apollo/queries";
 
 // Apollo Client hooks
@@ -92,5 +93,7 @@ export const useGetForumCategories = () => useQuery(FORUM_CATEGORIES);
 
 export const useGetTopicsByCategory = (options) =>
   useQuery(TOPICS_BY_CATEGORY, options);
+
+export const useCreateTopic = () => useMutation(CREATE_TOPIC);
 
 // Forum actions end -----------------------

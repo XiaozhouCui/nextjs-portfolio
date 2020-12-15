@@ -209,4 +209,28 @@ export const TOPICS_BY_CATEGORY = gql`
   }
 `;
 
+export const CREATE_TOPIC = gql`
+  mutation CreateTopic(
+    $title: String
+    $content: String
+    $forumCategory: String
+  ) {
+    createTopic(
+      input: { title: $title, content: $content, forumCategory: $forumCategory }
+    ) {
+      _id
+      title
+      content
+      slug
+      user {
+        avatar
+        username
+      }
+      forumCategory {
+        slug
+      }
+    }
+  }
+`;
+
 // FORUM QUERIES END --------------------------
