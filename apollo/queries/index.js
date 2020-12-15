@@ -227,6 +227,8 @@ export const CREATE_TOPIC = gql`
         username
       }
       forumCategory {
+        _id
+        title
         slug
       }
     }
