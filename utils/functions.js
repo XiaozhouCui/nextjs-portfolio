@@ -4,3 +4,5 @@ export const formatDate = (date) => {
   if (date) return moment.unix(date / 1000).format("DD/MM/YYYY");
   return null;
 };
+
+export const fromNow = (date) => moment.unix(date / 1000).fromNow();
