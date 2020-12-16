@@ -82,4 +82,8 @@ exports.forumMutations = {
     const topic = await ctx.models.Topic.create(input);
     return topic;
   },
+  createPost: async (root, { input }, ctx) => {
+    const post = await ctx.models.Post.create(input);
+    return post;
+  },
 };
