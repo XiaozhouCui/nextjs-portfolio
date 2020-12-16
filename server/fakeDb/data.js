@@ -25,7 +25,7 @@ const data = {
     {
       _id: user1Id,
       avatar:
-        "https://i.pinimg.com/originals/51/f6/fb/51f6fb256629fc755b8870c801092942.png",
+        "https://cdn1.iconfinder.com/data/icons/ninja-things-1/1772/ninja-simple-512.png",
       email: "joe.cui@outlook.com",
       name: "Joe Cui",
       username: "Joe888",
