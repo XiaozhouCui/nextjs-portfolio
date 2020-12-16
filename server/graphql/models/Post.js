@@ -9,7 +9,7 @@ class Post {
 
   getAllByTopic(topic) {
     return this.Model.find({ topic })
-      .sort("createdAt")
+      .sort("fullSlug")
       .populate("topic")
       .populate("user")
       .populate({ path: "parent", populate: "user" });

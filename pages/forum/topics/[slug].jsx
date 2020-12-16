@@ -12,6 +12,7 @@ import {
   useCreatePost,
 } from "@/apollo/actions";
 import Replier from "@/components/shared/Replier";
+import AppPagination from "@/components/shared/Pagination";
 
 const useInitialData = () => {
   const router = useRouter();
@@ -110,6 +111,9 @@ const Posts = ({ posts, topic, user }) => {
                 </button>
               </div>
             )}
+            <div className="pagination-container ml-auto">
+              <AppPagination />
+            </div>
           </div>
         </div>
       </div>
