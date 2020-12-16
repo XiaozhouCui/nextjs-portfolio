@@ -1,6 +1,7 @@
-import { useState } from "react";
+import { useState, useRef } from "react";
 import { getDataFromTree } from "@apollo/react-ssr";
 import { useRouter } from "next/router";
+import { toast } from "react-toastify";
 import withApollo from "@/hoc/withApollo";
 import BaseLayout from "@/layouts/BaseLayout";
 import PostItem from "@/components/forum/PostItem";
@@ -8,6 +9,7 @@ import {
   useGetTopicBySlug,
   useGetPostsByTopic,
   useGetUser,
+  useCreatePost,
 } from "@/apollo/actions";
 import Replier from "@/components/shared/Replier";
 
@@ -46,8 +48,31 @@ const PostPage = () => {
 };
 
 const Posts = ({ posts, topic, user }) => {
+  const pageEnd = useRef();
+  const [createPost, { error }] = useCreatePost();
   const [isReplierOpen, setReplierOpen] = useState(false);
   const [replyTo, setReplyTo] = useState(null);
+
+  const handleCreatePost = async (reply, resetReplier) => {
+    if (replyTo) {
+      // append original opst if it is a reply
+      reply.parent = replyTo._id;
+    }
+
+    // append topic to reply arg
+    reply.topic = topic._id;
+    await createPost({ variables: reply });
+
+    // once posted, scroll down to the bottom <div ref={pageEnd}></div>
+    resetReplier();
+    setReplierOpen(false);
+    toast.success("Post has been updated", { autoClose: 3000 });
+    scrollToBottom();
+  };
+
+  const scrollToBottom = () => {
+    pageEnd.current.scrollIntoView({ behavior: "smooth" });
+  };
 
   return (
     <section className="pb-5">
@@ -88,8 +113,9 @@ const Posts = ({ posts, topic, user }) => {
           </div>
         </div>
       </div>
+      <div ref={pageEnd}></div>
       <Replier
-        onSubmit={() => {}}
+        onSubmit={handleCreatePost}
         isOpen={isReplierOpen}
         hasTitle={false}
         replyTo={(replyTo && replyTo.user.username) || topic.title}

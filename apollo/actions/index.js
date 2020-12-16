@@ -15,6 +15,7 @@ import {
   CREATE_TOPIC,
   TOPIC_BY_SLUG,
   POSTS_BY_TOPIC,
+  CREATE_POST,
 } from "@/apollo/queries";
 
 // Apollo Client hooks
@@ -117,5 +118,7 @@ export const useCreateTopic = () =>
 
 export const useGetPostsByTopic = (options) =>
   useQuery(POSTS_BY_TOPIC, options);
+
+export const useCreatePost = () => useMutation(CREATE_POST);
 
 // Forum actions end -----------------------
