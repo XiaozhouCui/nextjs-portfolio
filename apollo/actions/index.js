@@ -14,6 +14,7 @@ import {
   TOPICS_BY_CATEGORY,
   CREATE_TOPIC,
   TOPIC_BY_SLUG,
+  POSTS_BY_TOPIC,
 } from "@/apollo/queries";
 
 // Apollo Client hooks
@@ -113,5 +114,8 @@ export const useCreateTopic = () =>
       } catch (e) {}
     },
   });
+
+export const useGetPostsByTopic = (options) =>
+  useQuery(POSTS_BY_TOPIC, options);
 
 // Forum actions end -----------------------

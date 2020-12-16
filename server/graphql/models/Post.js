@@ -10,7 +10,7 @@ class Post {
     return this.Model.find({ topic })
       .populate("topic")
       .populate("user")
-      .populate("parent");
+      .populate({ path: "parent", populate: "user" });
   }
 }
 

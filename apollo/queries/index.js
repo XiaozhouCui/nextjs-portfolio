@@ -235,4 +235,30 @@ export const CREATE_TOPIC = gql`
   }
 `;
 
+const postResponse = `
+  _id
+  content
+  slug
+  createdAt
+  user {
+    username
+    avatar
+  }
+  parent {
+    content
+    user {
+      username
+      avatar
+    }
+  }
+`;
+
+export const POSTS_BY_TOPIC = gql`
+  query PostsByTopic($slug: String) {
+    postsByTopic(slug: $slug) {
+      ${postResponse}
+    }
+  }
+`;
+
 // FORUM QUERIES END --------------------------
