@@ -17,22 +17,25 @@ import AppPagination from "@/components/shared/Pagination";
 const useInitialData = () => {
   const router = useRouter();
   const { slug } = router.query;
-  // topic data
+  // fetch topic data with apollo/client
   const { data: dataT } = useGetTopicBySlug({ variables: { slug } });
-  // posts data
-  const { data: dataP } = useGetPostsByTopic({ variables: { slug } });
-  // user data
+  // fetch posts data
+  // fetchMore() is returned from apollo/client useQuery()
+  const { data: dataP, fetchMore } = useGetPostsByTopic({
+    variables: { slug },
+  });
+  // fetch user data with apollo/client
   const { data: dataU } = useGetUser();
 
   const topic = (dataT && dataT.topicBySlug) || {};
   const posts = (dataP && dataP.postsByTopic) || [];
   const user = (dataT && dataU.user) || null;
 
-  return { topic, posts, user };
+  return { topic, posts, user, fetchMore };
 };
 
 const PostPage = () => {
-  const { topic, posts, user } = useInitialData();
+  const { topic, posts, ...rest } = useInitialData();
 
   return (
     <BaseLayout>
@@ -43,12 +46,12 @@ const PostPage = () => {
           </div>
         </div>
       </section>
-      <Posts posts={posts} topic={topic} user={user} />
+      <Posts posts={posts} topic={topic} {...rest} />
     </BaseLayout>
   );
 };
 
-const Posts = ({ posts, topic, user }) => {
+const Posts = ({ posts, topic, user, fetchMore }) => {
   const pageEnd = useRef();
   const [createPost, { error }] = useCreatePost();
   const [isReplierOpen, setReplierOpen] = useState(false);
@@ -64,10 +67,25 @@ const Posts = ({ posts, topic, user }) => {
     reply.topic = topic._id;
     await createPost({ variables: reply });
 
-    // once posted, scroll down to the bottom <div ref={pageEnd}></div>
+    // use fetchMore() to immediately re-render, alternative approach to cache
+    // fetchMore() will send a second async gql request
+    await fetchMore({
+      updateQuery: (previousResults, { fetchMoreResult }) => {
+        return Object.assign({}, previousResults, {
+          // postsByTopic comes from apollo query POSTS_BY_TOPIC
+          postsByTopic: [...fetchMoreResult.postsByTopic],
+        });
+      },
+    });
+
     resetReplier();
+    cleanup();
+  };
+
+  const cleanup = () => {
     setReplierOpen(false);
     toast.success("Post has been updated", { autoClose: 3000 });
+    // once posted, scroll down to the bottom <div ref={pageEnd}></div>
     scrollToBottom();
   };
 
