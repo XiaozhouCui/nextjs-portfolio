@@ -7,11 +7,15 @@ class Post {
     this.user = user;
   }
 
-  async getAllByTopic(topic) {
+  async getAllByTopic({ topic, pageNum = 1, pageSize = 5 }) {
+    const skips = pageSize * (pageNum - 1);
+
     const count = await this.Model.countDocuments({ topic });
 
     const posts = await this.Model.find({ topic })
       .sort("fullSlug")
+      .skip(skips)
+      .limit(pageSize)
       .populate("topic")
       .populate("user")
       .populate({ path: "parent", populate: "user" });

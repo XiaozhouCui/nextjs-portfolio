@@ -14,7 +14,7 @@ import {
 import Replier from "@/components/shared/Replier";
 import AppPagination from "@/components/shared/Pagination";
 
-const useInitialData = () => {
+const useInitialData = (pagination) => {
   const router = useRouter();
   const { slug } = router.query;
   // fetch topic data with apollo/client
@@ -22,21 +22,22 @@ const useInitialData = () => {
   // fetch posts data
   // fetchMore() is returned from apollo/client useQuery()
   const { data: dataP, fetchMore } = useGetPostsByTopic({
-    variables: { slug },
+    variables: { slug, ...pagination }, // pagination: {pageNum: 1, pageSize: 5}
   });
   // fetch user data with apollo/client
   const { data: dataU } = useGetUser();
 
   const topic = (dataT && dataT.topicBySlug) || {};
   // postsData includes posts:[post] and count:Int
-  const postsData = (dataP && dataP.postsByTopic) || { posts: [] };
+  const postsData = (dataP && dataP.postsByTopic) || { posts: [], count: 0 };
   const user = (dataT && dataU.user) || null;
 
   return { topic, ...postsData, user, fetchMore };
 };
 
 const PostPage = () => {
-  const { topic, posts, ...rest } = useInitialData();
+  const [pagination, setPagination] = useState({ pageNum: 1, pageSize: 5 });
+  const { topic, posts, ...rest } = useInitialData(pagination);
 
   return (
     <BaseLayout>
@@ -47,12 +48,12 @@ const PostPage = () => {
           </div>
         </div>
       </section>
-      <Posts posts={posts} topic={topic} {...rest} />
+      <Posts posts={posts} topic={topic} {...pagination} {...rest} />
     </BaseLayout>
   );
 };
 
-const Posts = ({ posts, topic, user, fetchMore, count }) => {
+const Posts = ({ posts, topic, user, fetchMore, count, pageSize }) => {
   const pageEnd = useRef();
   const [createPost, { error }] = useCreatePost();
   const [isReplierOpen, setReplierOpen] = useState(false);
@@ -131,7 +132,7 @@ const Posts = ({ posts, topic, user, fetchMore, count }) => {
               </div>
             )}
             <div className="pagination-container ml-auto">
-              <AppPagination count={count} />
+              <AppPagination count={count} pageSize={pageSize} />
             </div>
           </div>
         </div>
