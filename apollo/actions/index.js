@@ -16,9 +16,13 @@ import {
   TOPIC_BY_SLUG,
   POSTS_BY_TOPIC,
   CREATE_POST,
+  GET_HIGHLIGHT,
 } from "@/apollo/queries";
 
 // Apollo Client hooks
+
+export const useGetHighlight = (options) => useQuery(GET_HIGHLIGHT, options);
+
 // const [getPortfolios, { loading, data }] = useLazyQuery(GET_PORTFOLIOS); // lazyquery to be used with useEffect.
 export const useGetPortfolios = () => useQuery(GET_PORTFOLIOS);
 
