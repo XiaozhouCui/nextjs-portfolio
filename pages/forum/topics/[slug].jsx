@@ -76,6 +76,7 @@ const Posts = ({ posts, topic, user, fetchMore, ...pagination }) => {
   const [createPost, { error }] = useCreatePost();
   const [isReplierOpen, setReplierOpen] = useState(false);
   const [replyTo, setReplyTo] = useState(null);
+  const { pageSize, count, pageNum } = pagination;
 
   const handleCreatePost = async (reply, resetReplier) => {
     if (replyTo) {
@@ -87,16 +88,21 @@ const Posts = ({ posts, topic, user, fetchMore, ...pagination }) => {
     reply.topic = topic._id;
     await createPost({ variables: reply });
 
-    // use fetchMore() to immediately re-render, alternative approach to cache
+    const lastPage = count === 0 ? 1 : Math.ceil(count / pageSize);
+
+    // use fetchMore() to immediately re-render, this is an alternative approach to cache
     // fetchMore() will send a second async gql request
-    await fetchMore({
-      updateQuery: (previousResults, { fetchMoreResult }) => {
-        return Object.assign({}, previousResults, {
-          // postsByTopic comes from apollo query POSTS_BY_TOPIC
-          postsByTopic: [...fetchMoreResult.postsByTopic],
-        });
-      },
-    });
+    lastPage === pageNum &&
+      (await fetchMore({
+        // only fetch data for the last page
+        variables: { pageSize, pageNum: lastPage },
+        updateQuery: (previousResults, { fetchMoreResult }) => {
+          return Object.assign({}, previousResults, {
+            // postsByTopic comes from apollo query POSTS_BY_TOPIC
+            postsByTopic: { ...fetchMoreResult.postsByTopic },
+          });
+        },
+      }));
 
     resetReplier();
     cleanup();
