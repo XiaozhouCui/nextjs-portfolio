@@ -21,6 +21,8 @@ const useInitialData = (slug, pagination) => {
   // fetchMore() is returned from apollo/client useQuery()
   const { data: dataP, fetchMore } = useGetPostsByTopic({
     variables: { slug, ...pagination }, // pagination: {pageNum: 1, pageSize: 5}
+    // re-fetch data every 60 seconds to check if there is a new post added by others
+    pollInterval: 60000,
   });
   // fetch user data with apollo/client
   const { data: dataU } = useGetUser();
