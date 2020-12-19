@@ -14,9 +14,7 @@ import {
 import Replier from "@/components/shared/Replier";
 import AppPagination from "@/components/shared/Pagination";
 
-const useInitialData = (pagination) => {
-  const router = useRouter();
-  const { slug } = router.query;
+const useInitialData = (slug, pagination) => {
   // fetch topic data with apollo/client
   const { data: dataT } = useGetTopicBySlug({ variables: { slug } });
   // fetch posts data
@@ -36,8 +34,14 @@ const useInitialData = (pagination) => {
 };
 
 const PostPage = () => {
-  const [pagination, setPagination] = useState({ pageNum: 1, pageSize: 5 });
-  const { topic, posts, ...rest } = useInitialData(pagination);
+  const router = useRouter();
+  // query string (?pageNum=1&pageSize=5) has been added to URL by onPageChange()
+  const { slug, pageNum = 1, pageSize = 5 } = router.query;
+  const [pagination, setPagination] = useState({
+    pageNum: parseInt(pageNum, 10),
+    pageSize: parseInt(pageSize, 10),
+  });
+  const { topic, posts, ...rest } = useInitialData(slug, pagination);
 
   return (
     <BaseLayout>
@@ -54,6 +58,11 @@ const PostPage = () => {
         {...rest}
         {...pagination}
         onPageChange={(pageNum, pageSize) => {
+          router.push(
+            "/forum/topics/[slug]",
+            `/forum/topics/${slug}?pageNum=${pageNum}&pageSize=${pageSize}`,
+            { shallow: true } // don't fetch data
+          );
           setPagination({ pageNum, pageSize });
         }}
       />
@@ -61,16 +70,8 @@ const PostPage = () => {
   );
 };
 
-const Posts = ({
-  posts,
-  topic,
-  user,
-  fetchMore,
-  count,
-  pageSize,
-  pageNum,
-  onPageChange,
-}) => {
+const Posts = ({ posts, topic, user, fetchMore, ...pagination }) => {
+  // ...pagination: {count, pageSize, pageNum, onPageChange}
   const pageEnd = useRef();
   const [createPost, { error }] = useCreatePost();
   const [isReplierOpen, setReplierOpen] = useState(false);
@@ -115,7 +116,9 @@ const Posts = ({
   return (
     <section className="pb-5">
       <div className="jc-post-list">
-        {topic._id && <PostItem post={topic} className="topic-post-lead" />}
+        {topic._id && pagination.pageNum === 1 && (
+          <PostItem post={topic} className="topic-post-lead" />
+        )}
 
         {posts.map((post) => (
           <div key={post._id} className="row">
@@ -149,12 +152,7 @@ const Posts = ({
               </div>
             )}
             <div className="pagination-container ml-auto">
-              <AppPagination
-                count={count}
-                pageSize={pageSize}
-                pageNum={pageNum}
-                onChange={onPageChange}
-              />
+              <AppPagination {...pagination} />
             </div>
           </div>
         </div>
