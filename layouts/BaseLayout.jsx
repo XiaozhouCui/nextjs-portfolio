@@ -10,7 +10,7 @@ function BaseLayout({ children, page = "" }) {
     <div className="portfolio-app">
       <NavBar />
       {isHomePage() && <Hero />}
-      <div className="container">{children}</div>
+      <div className="container mb-5">{children}</div>
       {isHomePage() && (
         <footer id="sticky-footer" className="py-4 bg-black text-white-50 py-3">
           <div className="container text-center">

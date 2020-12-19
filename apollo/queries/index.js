@@ -296,6 +296,7 @@ export const GET_HIGHLIGHT = gql`
           avatar
           username
         }
+        createdAt
       }
       portfolios {
         _id
