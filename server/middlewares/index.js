@@ -14,6 +14,17 @@ exports.init = (server, db) => {
     saveUninitialized: false,
     store: db.initSessionStore(),
   };
+
+  // prepare for deployment
+  if (process.env.NODE_ENV === "production") {
+    server.set("trust proxy", 1);
+    sess.cookie.sucure = true;
+    sess.cookie.httpOnly = true;
+    sess.cookie.sameSite = true;
+    // DOMAIN: .next-gql-portfolio.herokuapp.com
+    sess.cookie.domain = process.env.DOMAIN;
+  }
+
   // add express-session as middleware
   server.use(session(sess));
 
