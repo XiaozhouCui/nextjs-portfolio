@@ -10,7 +10,11 @@ const Hero = () => {
             Check my portfolio and video tutorials
           </h2>
           <div className="button-container">
-            <a href="" className="btn btn-main bg-blue ttu">
+            <a
+              href="https://joesdemosite.com"
+              target="_blank"
+              className="btn btn-main bg-blue ttu"
+            >
               See my work
             </a>
           </div>
@@ -18,10 +22,7 @@ const Hero = () => {
         <div className="hero-right col-md-6">
           <div className="hero-image-container">
             <a className="grow hero-link">
-              <img
-                className="hero-image"
-                src="https://i.udemycdn.com/course/750x422/1652608_662b_8.jpg"
-              ></img>
+              <img className="hero-image" src="/portrait.jpg"></img>
             </a>
           </div>
         </div>
