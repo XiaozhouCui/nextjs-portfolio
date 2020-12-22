@@ -7,7 +7,7 @@ const Hero = () => {
             Hey I'm Joe. Experienced full stack developer
           </h1>
           <h2 className="white hero-subtitle">
-            Check my portfolio and video tutorials
+            Check my portfolio personal projects
           </h2>
           <div className="button-container">
             <a
